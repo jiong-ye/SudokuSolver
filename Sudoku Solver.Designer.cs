@@ -36,7 +36,8 @@
             this.SetNumbers.Location = new System.Drawing.Point(552, 12);
             this.SetNumbers.Name = "SetNumbers";
             this.SetNumbers.Size = new System.Drawing.Size(150, 23);
-            this.SetNumbers.TabIndex = 0;
+            this.SetNumbers.TabIndex = 1000;
+            this.SetNumbers.TabStop = false;
             this.SetNumbers.Text = "Set Numbers";
             this.SetNumbers.UseVisualStyleBackColor = true;
             // 

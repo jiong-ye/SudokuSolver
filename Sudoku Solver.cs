@@ -13,8 +13,8 @@ namespace Sudoku_Solver
     {
         protected struct Number
         {
-            int Value;
-            TextBox ValueBox;
+            public int Value;
+            public TextBox ValueBox;
         }
         private const int CELLS = 9;
         private const int CELL_ROWS = 3;
@@ -27,13 +27,8 @@ namespace Sudoku_Solver
         private const int BLOCK_COLUMNS = 3;
         private const int BLOCK_WIDTH = CELL_WIDTH * BLOCK_COLUMNS;
         private const int BLOCK_HEIGHT = CELL_HEIGHT * BLOCK_ROWS;
-        
-        protected Number[,] Numbers = new Number[9,9];
 
-        public SudokuSolver()
-        {
-            InitializeComponent();
-        }
+        protected Number[,] Numbers = new Number[9, 9];
 
         public void SetupBlocks()
         {
@@ -66,24 +61,56 @@ namespace Sudoku_Solver
         public void SetupCells(Panel block, int row, int column)
         {
             string _FontFamily = "Calibri";
-            float _FontSize = 22.5f;
+            float _FontSize = 25.5f;
+            int x, y;
 
             for (int i = 0; i < CELL_ROWS; i++)
             {
                 for (int j = 0; j < CELL_COLUMNS; j++)
                 {
+                    x = row * CELL_ROWS + i;
+                    y = column * CELL_COLUMNS + j;
+
+                    //set up text box
                     TextBox tb = new TextBox();
+                    tb.Name = "Cell_" + x.ToString() + "_" + y.ToString();
                     tb.Top = CELL_HEIGHT * i;
                     tb.Left = CELL_WIDTH * j;
-                    tb.Text = (row+i).ToString() + "," + (column+j).ToString();
+                    tb.TabIndex = x * 10 + y;
+                    //tb.Text = x.ToString() + "," + y.ToString();
+                    //tb.Text = (x * 10 + y).ToString();
                     tb.Multiline = true;
                     tb.Width = CELL_WIDTH;
                     tb.Height = CELL_HEIGHT;
                     tb.TextAlign = HorizontalAlignment.Center;
                     tb.Font = new Font(_FontFamily, _FontSize);
+                    tb.KeyDown += new KeyEventHandler(ValidateTextbox);
+
+                    Numbers[x, y].Value = 0;
+                    Numbers[x, y].ValueBox = tb;
+
                     block.Controls.Add(tb);
                 }
             }
+        }
+
+        void ValidateTextbox(object sender, KeyEventArgs e)
+        {
+            Keys[] AllowedKey = { Keys.Delete, Keys.Back, Keys.Clear };
+            TextBox tb = (TextBox)sender;
+            string value = tb.Text.Trim();
+
+            if (value.Length > 0)
+                e.SuppressKeyPress = true;
+
+            if (Array.IndexOf(AllowedKey, e.KeyValue) >= 0 && (e.KeyValue < 47 || e.KeyValue > 55))
+                e.SuppressKeyPress = true;
+
+        }
+
+        public SudokuSolver()
+        {
+            InitializeComponent();
         }
 
         private void SudokuSolver_Load(object sender, EventArgs e)
