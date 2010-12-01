@@ -11,10 +11,11 @@ namespace Sudoku_Solver
 {
     public partial class SudokuSolver : Form
     {
+        protected enum CellState { Empty, Set, Solved, Guessed };
         protected struct Number
-        {
-            public int Value;
+        {          
             public TextBox Cell;
+            public CellState State;
         }
         private const int CELLS = 9;
         private const int CELL_ROWS = 3;
@@ -29,6 +30,7 @@ namespace Sudoku_Solver
         private const int BLOCK_HEIGHT = CELL_HEIGHT * BLOCK_ROWS;
 
         protected Number[,] Numbers = new Number[BLOCK_ROWS * CELL_ROWS, BLOCK_COLUMNS * CELL_COLUMNS];
+        protected Boolean NumberSet = false;
 
         public void SetupBlocks()
         {
@@ -61,7 +63,7 @@ namespace Sudoku_Solver
         public void SetupCells(Panel block, int row, int column)
         {
             string _FontFamily = "Calibri";
-            float _FontSize = 25.5f;
+            float _FontSize = 28.5f;
             int x, y;
 
             for (int i = 0; i < CELL_ROWS; i++)
@@ -80,14 +82,15 @@ namespace Sudoku_Solver
                     //tb.Text = x.ToString() + "," + y.ToString();
                     //tb.Text = (x * 10 + y).ToString();
                     tb.Multiline = true;
+                    tb.AcceptsReturn = false;
                     tb.Width = CELL_WIDTH;
                     tb.Height = CELL_HEIGHT;
                     tb.TextAlign = HorizontalAlignment.Center;
                     tb.Font = new Font(_FontFamily, _FontSize);
                     tb.KeyDown += new KeyEventHandler(ValidateTextbox);
-
-                    Numbers[x, y].Value = 0;
+                    
                     Numbers[x, y].Cell = tb;
+                    Numbers[x, y].State = CellState.Empty;
 
                     block.Controls.Add(tb);
                 }
@@ -103,11 +106,26 @@ namespace Sudoku_Solver
             if (Array.IndexOf(AllowedKey, e.KeyData) < 0)
             {
                 if (value.Length > 0)
+                {
                     e.SuppressKeyPress = true;
+                    return;
+                }
 
                 if (e.KeyValue < 47 || e.KeyValue > 55)
+                {
                     e.SuppressKeyPress = true;
+                    return;
+                }
+                else
+                {
+                    SetCellState(tb.Name, CellState.Set);
+                }
             }
+        }
+
+        void SetCellState(string CellName, CellState state)
+        {
+
         }
 
         public SudokuSolver()
@@ -122,21 +140,38 @@ namespace Sudoku_Solver
 
         private void SetNumbers_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < BLOCK_ROWS*CELL_ROWS; i++)
+            if (!NumberSet)
+            {
+                SetOriginalNumber(true);
+                NumberSet = true;
+                SetNumbers.Text = "Unset Numbers";
+            }
+            else
+            {
+                SetOriginalNumber(false);
+                NumberSet = false;
+                SetNumbers.Text = "Set Numbers";
+            }
+            
+        }
+
+        private void SetOriginalNumber(Boolean set)
+        {
+            for (int i = 0; i < BLOCK_ROWS * CELL_ROWS; i++)
             {
                 for (int j = 0; j < BLOCK_COLUMNS * CELL_COLUMNS; j++)
                 {
-                    string value = Numbers[i,j].Cell.Text.Trim();
+                    string value = Numbers[i, j].Cell.Text.Trim();
                     int number;
+
                     if (Int32.TryParse(value, out number))
                     {
                         if (number >= 1 && number <= 9)
                         {
-                            Numbers[i, j].Cell.Enabled = false;
-                        }
-                        else
-                        {
-                            Numbers[i, j].Cell.Enabled = true;
+                            if (set)
+                                Numbers[i, j].Cell.Enabled = false;
+                            else
+                                Numbers[i, j].Cell.Enabled = true;
                         }
                     }
                 }
