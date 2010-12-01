@@ -63,6 +63,7 @@
             this.ShowPossibleValues.TabIndex = 1002;
             this.ShowPossibleValues.Text = "Show Possible Values";
             this.ShowPossibleValues.UseVisualStyleBackColor = true;
+            this.ShowPossibleValues.Click += new System.EventHandler(this.ShowPossibleValues_Click);
             // 
             // SudokuSolver
             // 

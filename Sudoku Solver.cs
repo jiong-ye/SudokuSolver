@@ -70,20 +70,7 @@ namespace Sudoku_Solver
         {
             if (NumberSet)
             {
-                for (int i = 0; i < BLOCK_ROWS * CELL_ROWS; i++)
-                {
-                    for (int j = 0; j < BLOCK_COLUMNS * CELL_COLUMNS; j++)
-                    {
-                        if (Numbers[i, j].State == CellState.Empty && Numbers[i, j].Value == 0)
-                        {
-                            List<int> PossibleValues = SolveByRowColumnAndBlock(i, j);
-                            if (PossibleValues.Count == 1)
-                            {
-                                SetCellValue(i, j, PossibleValues[0], CellState.Solved);
-                            }
-                        }
-                    }
-                }
+                SolveSingleRun();                
             }
             else
             {
@@ -91,6 +78,17 @@ namespace Sudoku_Solver
             }
         }
 
-        
+        private void ShowPossibleValues_Click(object sender, EventArgs e)
+        {
+            if (NumberSet)
+            {
+                SolveSingleRun();
+                DisplayPossibleValue();
+            }
+            else
+            {
+                MessageBox.Show("Set Numbers First, Dumbass.");
+            }
+        }
     }
 }

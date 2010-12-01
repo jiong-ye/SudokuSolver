@@ -9,6 +9,29 @@ namespace Sudoku_Solver
 {
     partial class SudokuSolver
     {
+        //try solving, run only once
+        private void SolveSingleRun()
+        {
+            for (int i = 0; i < BLOCK_ROWS * CELL_ROWS; i++)
+            {
+                for (int j = 0; j < BLOCK_COLUMNS * CELL_COLUMNS; j++)
+                {
+                    if (Numbers[i, j].State == CellState.Empty && Numbers[i, j].Value == 0)
+                    {
+                        List<int> PossibleValues = SolveByRowColumnAndBlock(i, j);
+                        if (PossibleValues.Count == 1)
+                        {
+                            SetCellValue(i, j, PossibleValues[0], CellState.Solved);
+                        }
+                        else
+                        {
+                            Numbers[i, j].PossibleValues = PossibleValues;
+                        }
+                    }
+                }
+            }
+        }
+
         //solve a cell by looking at its row, column and block
         private List<int> SolveByRowColumnAndBlock(int row, int column)
         {
@@ -40,6 +63,11 @@ namespace Sudoku_Solver
             }
 
             return PossibleValues;
+        }
+
+        private void DisplayPossibleValue()
+        {
+
         }
 
         //check if a value is legal for a cell
