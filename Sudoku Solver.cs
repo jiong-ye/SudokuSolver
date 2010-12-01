@@ -12,11 +12,17 @@ namespace Sudoku_Solver
     public partial class SudokuSolver : Form
     {
         protected enum CellState { Empty, Set, Solved, Guessed };
+        protected enum CellStyleState { Normal, Conflicted, Solved };
         protected struct Number
-        {          
-            public TextBox Cell;
-            public CellState State;
+        {
+            public int Block;                   //which block this cell belongs to
+            public TextBox Cell;                //textbox control for this cell
+            public CellState State;             //state of this cell
+            public CellStyleState StyleState;   //determines the background color mostly
+            public int Value;                   //the integer value of this cell
+            public List<int> PossibleValues;    //a list of possible values;
         }
+
         private const int CELLS = 9;
         private const int CELL_ROWS = 3;
         private const int CELL_COLUMNS = 3;
@@ -32,102 +38,6 @@ namespace Sudoku_Solver
         protected Number[,] Numbers = new Number[BLOCK_ROWS * CELL_ROWS, BLOCK_COLUMNS * CELL_COLUMNS];
         protected Boolean NumberSet = false;
 
-        public void SetupBlocks()
-        {
-            for (int i = 0; i < BLOCK_ROWS; i++)
-            {
-                for (int j = 0; j < BLOCK_COLUMNS; j++)
-                {
-                    Panel block = GetNewBlock(i, j);
-                    this.Controls.Add(block);
-                }
-            }
-        }
-
-        public Panel GetNewBlock(int row, int column)
-        {
-            Panel block = new Panel();
-
-            //set block styles
-            block.BorderStyle = BorderStyle.FixedSingle;
-            block.Width = BLOCK_WIDTH;
-            block.Height = BLOCK_HEIGHT;
-            block.Top = BLOCK_HEIGHT * row + (row + 1) * 1;
-            block.Left = BLOCK_WIDTH * column + (column + 1) * 1;
-
-            SetupCells(block, row, column);
-
-            return block;
-        }
-
-        public void SetupCells(Panel block, int row, int column)
-        {
-            string _FontFamily = "Calibri";
-            float _FontSize = 28.5f;
-            int x, y;
-
-            for (int i = 0; i < CELL_ROWS; i++)
-            {
-                for (int j = 0; j < CELL_COLUMNS; j++)
-                {
-                    x = row * CELL_ROWS + i;
-                    y = column * CELL_COLUMNS + j;
-
-                    //set up text box
-                    TextBox tb = new TextBox();
-                    tb.Name = "Cell_" + x.ToString() + "_" + y.ToString();
-                    tb.Top = CELL_HEIGHT * i;
-                    tb.Left = CELL_WIDTH * j;
-                    tb.TabIndex = x * 10 + y;
-                    //tb.Text = x.ToString() + "," + y.ToString();
-                    //tb.Text = (x * 10 + y).ToString();
-                    tb.Multiline = true;
-                    tb.AcceptsReturn = false;
-                    tb.Width = CELL_WIDTH;
-                    tb.Height = CELL_HEIGHT;
-                    tb.TextAlign = HorizontalAlignment.Center;
-                    tb.Font = new Font(_FontFamily, _FontSize);
-                    tb.KeyDown += new KeyEventHandler(ValidateTextbox);
-                    
-                    Numbers[x, y].Cell = tb;
-                    Numbers[x, y].State = CellState.Empty;
-
-                    block.Controls.Add(tb);
-                }
-            }
-        }
-
-        void ValidateTextbox(object sender, KeyEventArgs e)
-        {
-            Keys[] AllowedKey = { Keys.Delete, Keys.Back, Keys.Clear, Keys.Left, Keys.Right, Keys.Up, Keys.Down};
-            TextBox tb = (TextBox)sender;
-            string value = tb.Text.Trim();
-
-            if (Array.IndexOf(AllowedKey, e.KeyData) < 0)
-            {
-                if (value.Length > 0)
-                {
-                    e.SuppressKeyPress = true;
-                    return;
-                }
-
-                if (e.KeyValue < 47 || e.KeyValue > 55)
-                {
-                    e.SuppressKeyPress = true;
-                    return;
-                }
-                else
-                {
-                    SetCellState(tb.Name, CellState.Set);
-                }
-            }
-        }
-
-        void SetCellState(string CellName, CellState state)
-        {
-
-        }
-
         public SudokuSolver()
         {
             InitializeComponent();
@@ -136,6 +46,7 @@ namespace Sudoku_Solver
         private void SudokuSolver_Load(object sender, EventArgs e)
         {
             SetupBlocks();
+            SetTestNumber();
         }
 
         private void SetNumbers_Click(object sender, EventArgs e)
@@ -152,30 +63,34 @@ namespace Sudoku_Solver
                 NumberSet = false;
                 SetNumbers.Text = "Set Numbers";
             }
-            
+
         }
 
-        private void SetOriginalNumber(Boolean set)
+        private void SingleSolve_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < BLOCK_ROWS * CELL_ROWS; i++)
+            if (NumberSet)
             {
-                for (int j = 0; j < BLOCK_COLUMNS * CELL_COLUMNS; j++)
+                for (int i = 0; i < BLOCK_ROWS * CELL_ROWS; i++)
                 {
-                    string value = Numbers[i, j].Cell.Text.Trim();
-                    int number;
-
-                    if (Int32.TryParse(value, out number))
+                    for (int j = 0; j < BLOCK_COLUMNS * CELL_COLUMNS; j++)
                     {
-                        if (number >= 1 && number <= 9)
+                        if (Numbers[i, j].State == CellState.Empty && Numbers[i, j].Value == 0)
                         {
-                            if (set)
-                                Numbers[i, j].Cell.Enabled = false;
-                            else
-                                Numbers[i, j].Cell.Enabled = true;
+                            List<int> PossibleValues = SolveByRowColumnAndBlock(i, j);
+                            if (PossibleValues.Count == 1)
+                            {
+                                SetCellValue(i, j, PossibleValues[0], CellState.Solved);
+                            }
                         }
                     }
                 }
             }
+            else
+            {
+                MessageBox.Show("Set Numbers First, Dumbass.");
+            }
         }
+
+        
     }
 }
