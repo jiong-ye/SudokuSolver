@@ -40,6 +40,7 @@
             this.SetNumbers.TabStop = false;
             this.SetNumbers.Text = "Set Numbers";
             this.SetNumbers.UseVisualStyleBackColor = true;
+            this.SetNumbers.Click += new System.EventHandler(this.SetNumbers_Click);
             // 
             // SudokuSolver
             // 

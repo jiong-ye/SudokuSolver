@@ -14,7 +14,7 @@ namespace Sudoku_Solver
         protected struct Number
         {
             public int Value;
-            public TextBox ValueBox;
+            public TextBox Cell;
         }
         private const int CELLS = 9;
         private const int CELL_ROWS = 3;
@@ -28,7 +28,7 @@ namespace Sudoku_Solver
         private const int BLOCK_WIDTH = CELL_WIDTH * BLOCK_COLUMNS;
         private const int BLOCK_HEIGHT = CELL_HEIGHT * BLOCK_ROWS;
 
-        protected Number[,] Numbers = new Number[9, 9];
+        protected Number[,] Numbers = new Number[BLOCK_ROWS * CELL_ROWS, BLOCK_COLUMNS * CELL_COLUMNS];
 
         public void SetupBlocks()
         {
@@ -87,7 +87,7 @@ namespace Sudoku_Solver
                     tb.KeyDown += new KeyEventHandler(ValidateTextbox);
 
                     Numbers[x, y].Value = 0;
-                    Numbers[x, y].ValueBox = tb;
+                    Numbers[x, y].Cell = tb;
 
                     block.Controls.Add(tb);
                 }
@@ -96,16 +96,18 @@ namespace Sudoku_Solver
 
         void ValidateTextbox(object sender, KeyEventArgs e)
         {
-            Keys[] AllowedKey = { Keys.Delete, Keys.Back, Keys.Clear };
+            Keys[] AllowedKey = { Keys.Delete, Keys.Back, Keys.Clear, Keys.Left, Keys.Right, Keys.Up, Keys.Down};
             TextBox tb = (TextBox)sender;
             string value = tb.Text.Trim();
 
-            if (value.Length > 0)
-                e.SuppressKeyPress = true;
+            if (Array.IndexOf(AllowedKey, e.KeyData) < 0)
+            {
+                if (value.Length > 0)
+                    e.SuppressKeyPress = true;
 
-            if (Array.IndexOf(AllowedKey, e.KeyValue) >= 0 && (e.KeyValue < 47 || e.KeyValue > 55))
-                e.SuppressKeyPress = true;
-
+                if (e.KeyValue < 47 || e.KeyValue > 55)
+                    e.SuppressKeyPress = true;
+            }
         }
 
         public SudokuSolver()
@@ -116,6 +118,29 @@ namespace Sudoku_Solver
         private void SudokuSolver_Load(object sender, EventArgs e)
         {
             SetupBlocks();
+        }
+
+        private void SetNumbers_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < BLOCK_ROWS*CELL_ROWS; i++)
+            {
+                for (int j = 0; j < BLOCK_COLUMNS * CELL_COLUMNS; j++)
+                {
+                    string value = Numbers[i,j].Cell.Text.Trim();
+                    int number;
+                    if (Int32.TryParse(value, out number))
+                    {
+                        if (number >= 1 && number <= 9)
+                        {
+                            Numbers[i, j].Cell.Enabled = false;
+                        }
+                        else
+                        {
+                            Numbers[i, j].Cell.Enabled = true;
+                        }
+                    }
+                }
+            }
         }
     }
 }
