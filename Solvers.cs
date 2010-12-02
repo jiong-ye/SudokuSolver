@@ -26,6 +26,7 @@ namespace Sudoku_Solver
                         else
                         {
                             Numbers[i, j].PossibleValues = PossibleValues;
+                            Numbers[i, j].State = CellState.Empty;
                         }
                     }
                 }
@@ -65,7 +66,21 @@ namespace Sudoku_Solver
             return PossibleValues;
         }
 
-        private void DisplayPossibleValue()
+        private void DisplayAllPossibleValues()
+        {
+            for (int i = 0; i < BLOCK_ROWS * CELL_ROWS; i++)
+            {
+                for (int j = 0; j < BLOCK_COLUMNS * CELL_COLUMNS; j++)
+                {
+                    if (Numbers[i, j].State == CellState.Set && Numbers[i, j].PossibleValues.Count > 0)
+                    {
+                        DisplayCellPossibleValues(i, j, Numbers[i, j].PossibleValues);
+                    }
+                }
+            }
+        }
+
+        private void DisplayCellPossibleValues(int row, int column, List<int> PossibleValues)
         {
 
         }

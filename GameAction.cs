@@ -9,18 +9,6 @@ namespace Sudoku_Solver
 {
     partial class SudokuSolver
     {
-        protected int[,] TestNumbers = { 
-                                           {0,0,0,0,0,5,0,3,7},
-                                           {0,0,6,0,0,0,0,0,0},
-                                           {0,5,0,3,7,0,1,2,0},
-                                           {0,0,0,0,4,0,7,0,2},
-                                           {0,0,0,0,1,8,6,0,4},
-                                           {0,0,0,5,0,0,0,8,0},
-                                           {0,4,1,0,0,0,0,0,0},
-                                           {0,0,0,0,0,0,8,7,3},
-                                           {0,0,0,0,8,0,0,0,1}
-                                       };
-
         private void SetOriginalNumber(Boolean set)
         {
             for (int i = 0; i < BLOCK_ROWS * CELL_ROWS; i++)
@@ -61,12 +49,6 @@ namespace Sudoku_Solver
             }
         }
 
-
-        void SetCellState(string CellName, CellState state)
-        {
-
-        }
-
         //set up 9 blocks to contain 9 blocks of numbers
         public void SetupBlocks()
         {
@@ -101,7 +83,7 @@ namespace Sudoku_Solver
         public void SetupCells(Panel block, int row, int column)
         {
             string _FontFamily = "Calibri";
-            float _FontSize = 28.5f;
+            float _FontSize = CELL_FONT_FIZE;
             int x, y;
 
             for (int i = 0; i < CELL_ROWS; i++)

@@ -11,36 +11,16 @@ namespace Sudoku_Solver
 {
     public partial class SudokuSolver : Form
     {
-        protected enum CellState { Empty, Set, Solved, Guessed };
-        protected enum CellStyleState { Normal, Conflicted, Solved };
-        protected struct Number
-        {
-            public int Block;                   //which block this cell belongs to
-            public TextBox Cell;                //textbox control for this cell
-            public CellState State;             //state of this cell
-            public CellStyleState StyleState;   //determines the background color mostly
-            public int Value;                   //the integer value of this cell
-            public List<int> PossibleValues;    //a list of possible values;
-        }
-
-        private const int CELLS = 9;
-        private const int CELL_ROWS = 3;
-        private const int CELL_COLUMNS = 3;
-        private const int CELL_WIDTH = 60;
-        private const int CELL_HEIGHT = 60;
-
-        private const int BLOCKS = 9;
-        private const int BLOCK_ROWS = 3;
-        private const int BLOCK_COLUMNS = 3;
-        private const int BLOCK_WIDTH = CELL_WIDTH * BLOCK_COLUMNS;
-        private const int BLOCK_HEIGHT = CELL_HEIGHT * BLOCK_ROWS;
-
-        protected Number[,] Numbers = new Number[BLOCK_ROWS * CELL_ROWS, BLOCK_COLUMNS * CELL_COLUMNS];
-        protected Boolean NumberSet = false;
-
         public SudokuSolver()
         {
             InitializeComponent();
+
+            this.Width = FORM_WIDTH + SetNumbers.Width + 25;
+            this.Height = FORM_HEIGHT + 40;
+
+            SetNumbers.Left = this.Width - SetNumbers.Width - 13;
+            SingleSolve.Left = this.Width - SingleSolve.Width - 13;
+            ShowPossibleValues.Left = this.Width - ShowPossibleValues.Width - 13;
         }
 
         private void SudokuSolver_Load(object sender, EventArgs e)
@@ -83,7 +63,7 @@ namespace Sudoku_Solver
             if (NumberSet)
             {
                 SolveSingleRun();
-                DisplayPossibleValue();
+                DisplayAllPossibleValues();
             }
             else
             {
