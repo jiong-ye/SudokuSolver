@@ -109,25 +109,11 @@ namespace Sudoku_Solver
                     tb.KeyDown += new KeyEventHandler(ValidateTextbox);
                     block.Controls.Add(tb);
 
-                    //set up possible value box
-                    TextBox pvtb = new TextBox();
-                    pvtb.Multiline = true;
-                    pvtb.BorderStyle = BorderStyle.FixedSingle;
-                    pvtb.Font = new Font(_FontFamily, POSSIBLE_VALUE_FONT_SIZE);
-                    //pvtb.Width = CELL_WIDTH - 10;
-                    pvtb.Height = 12;
-                    pvtb.Top = CELL_HEIGHT * i+4;
-                    pvtb.Left = CELL_WIDTH * j+4;
-                    pvtb.Enabled = true;
-                    pvtb.Text = "1,2,3";
-                    //block.Controls.Add(pvtb);
-
                     Numbers[x, y].Cell = tb;
                     Numbers[x, y].State = CellState.Empty;
                     Numbers[x, y].StyleState = CellStyleState.Normal;
                     Numbers[x, y].Value = 0;
                     Numbers[x, y].Block = row * CELL_ROWS + column;
-                    Numbers[x, y].PossibleValuesBox = pvtb;                    
                 }
             }
         }
@@ -147,9 +133,12 @@ namespace Sudoku_Solver
                     number = e.KeyValue - 48;
                 else if (e.KeyValue >= 97 && e.KeyValue <= 105)
                     number = e.KeyValue - 96;
-                
-                if(IsLegalValue(tb.Name, number))
+
+                if (IsLegalValue(tb.Name, number))
+                {
                     SetCellValue(tb.Name, number, CellState.Set);
+                    CellUnsolved--;
+                }
 
                 e.SuppressKeyPress = true;
             }
@@ -160,7 +149,7 @@ namespace Sudoku_Solver
         {
             Point c = GetCellCoordinateByName(name);
            
-            if(!c.IsEmpty)
+            if(!c.IsEmpty || (c.X == 0 && c.Y == 0))
                 SetCellValue(c.X, c.Y, value, state);
         }
 
@@ -188,6 +177,9 @@ namespace Sudoku_Solver
                     break;
                 case CellStyleState.Conflicted:
                     BackgroundColor = Color.Tan;
+                    break;
+                case CellStyleState.Checked:
+                    BackgroundColor = Color.Gainsboro;
                     break;
                 default:
                     break;

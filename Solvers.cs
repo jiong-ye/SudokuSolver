@@ -25,6 +25,7 @@ namespace Sudoku_Solver
                         }
                         else
                         {
+                            SetCellStyle(Numbers[i, j].Cell, CellStyleState.Checked);
                             Numbers[i, j].PossibleValues = PossibleValues.ToList();
                             Numbers[i, j].State = CellState.Empty;
                         }
@@ -92,7 +93,7 @@ namespace Sudoku_Solver
         Boolean IsLegalValue(string name, int number)
         {
             Point c = GetCellCoordinateByName(name);
-            if (!c.IsEmpty)
+            if (!c.IsEmpty || (c.X == 0 && c.Y == 0))
                 return IsLegalValue(c.X, c.Y, number);
             return false;
         }

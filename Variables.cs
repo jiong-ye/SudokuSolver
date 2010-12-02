@@ -9,7 +9,7 @@ namespace Sudoku_Solver
     partial class SudokuSolver
     {
         protected enum CellState { Empty, Set, Solved, Guessed };
-        protected enum CellStyleState { Normal, Conflicted, Solved };
+        protected enum CellStyleState { Normal, Checked, Conflicted, Solved };
         protected struct Number
         {
             public int Block;                                                   //which block this cell belongs to
@@ -18,7 +18,6 @@ namespace Sudoku_Solver
             public CellStyleState StyleState;                                   //determines the background color mostly
             public int Value;                                                   //the integer value of this cell
             public List<int> PossibleValues;                                    //a list of possible values;
-            public TextBox PossibleValuesBox;
         }
 
         private const int CELLS = 9;                                            //number of cells in a block
@@ -38,6 +37,8 @@ namespace Sudoku_Solver
         private const int FORM_WIDTH = BLOCK_WIDTH * BLOCK_COLUMNS;
         private const int FORM_HEIGHT = BLOCK_HEIGHT * BLOCK_ROWS;
 
+        protected int CellUnsolved = 81;
+        protected int FailedAttemp = 0;
         protected Panel[] Blocks = new Panel[9];
 
         //this array holds number structures that is used to do operations

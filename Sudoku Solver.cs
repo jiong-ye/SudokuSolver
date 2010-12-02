@@ -50,7 +50,20 @@ namespace Sudoku_Solver
         {
             if (NumberSet)
             {
-                SolveSingleRun();                
+                ClearCellStyle(CellStyleState.Checked);
+                SolveSingleRun();
+            }
+            else
+            {
+                MessageBox.Show("Set Numbers First, Dumbass.");
+            }
+        }
+
+        private void SolveMultiRun_Click(object sender, EventArgs e)
+        {
+            if (NumberSet)
+            {
+                FailedAttemp = 0;
             }
             else
             {
