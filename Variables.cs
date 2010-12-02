@@ -18,6 +18,7 @@ namespace Sudoku_Solver
             public CellStyleState StyleState;                                   //determines the background color mostly
             public int Value;                                                   //the integer value of this cell
             public List<int> PossibleValues;                                    //a list of possible values;
+            public TextBox PossibleValuesBox;
         }
 
         private const int CELLS = 9;                                            //number of cells in a block
@@ -25,7 +26,8 @@ namespace Sudoku_Solver
         private const int CELL_COLUMNS = 3;                                     //number of columns of cells in a block
         private const int CELL_WIDTH = 60;                                      //cell width, change this to change form width
         private const int CELL_HEIGHT = 60;                                     //cell height, change this to change form height
-        private const float CELL_FONT_FIZE = 20.0F;                             //cell font size
+        private const float CELL_FONT_FIZE = 27.0F;                             //cell font size
+        private const float POSSIBLE_VALUE_FONT_SIZE = 15.0f;
 
         private const int BLOCKS = 9;                                           //number of blocks
         private const int BLOCK_ROWS = 3;                                       //number of rows of blocks
@@ -35,6 +37,8 @@ namespace Sudoku_Solver
 
         private const int FORM_WIDTH = BLOCK_WIDTH * BLOCK_COLUMNS;
         private const int FORM_HEIGHT = BLOCK_HEIGHT * BLOCK_ROWS;
+
+        protected Panel[] Blocks = new Panel[9];
 
         //this array holds number structures that is used to do operations
         protected Number[,] Numbers = new Number[BLOCK_ROWS * CELL_ROWS, BLOCK_COLUMNS * CELL_COLUMNS];

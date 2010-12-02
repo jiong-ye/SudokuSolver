@@ -57,6 +57,7 @@ namespace Sudoku_Solver
                 for (int j = 0; j < BLOCK_COLUMNS; j++)
                 {
                     Panel block = GetNewBlock(i, j);
+                    Blocks[i * BLOCK_COLUMNS + i] = block;
                     this.Controls.Add(block);
                 }
             }
@@ -93,14 +94,12 @@ namespace Sudoku_Solver
                     x = row * CELL_ROWS + i;
                     y = column * CELL_COLUMNS + j;
 
-                    //set up text box
+                    //set up value box
                     TextBox tb = new TextBox();
                     tb.Name = "Cell_" + x.ToString() + "_" + y.ToString();
                     tb.Top = CELL_HEIGHT * i;
                     tb.Left = CELL_WIDTH * j;
                     tb.TabIndex = x * 10 + y;
-                    //tb.Text = x.ToString() + "," + y.ToString();
-                    //tb.Text = (row*CELL_ROWS+column).ToString();
                     tb.Multiline = true;
                     tb.AcceptsReturn = false;
                     tb.Width = CELL_WIDTH;
@@ -108,14 +107,27 @@ namespace Sudoku_Solver
                     tb.TextAlign = HorizontalAlignment.Center;
                     tb.Font = new Font(_FontFamily, _FontSize);
                     tb.KeyDown += new KeyEventHandler(ValidateTextbox);
+                    block.Controls.Add(tb);
+
+                    //set up possible value box
+                    TextBox pvtb = new TextBox();
+                    pvtb.Multiline = true;
+                    pvtb.BorderStyle = BorderStyle.FixedSingle;
+                    pvtb.Font = new Font(_FontFamily, POSSIBLE_VALUE_FONT_SIZE);
+                    //pvtb.Width = CELL_WIDTH - 10;
+                    pvtb.Height = 12;
+                    pvtb.Top = CELL_HEIGHT * i+4;
+                    pvtb.Left = CELL_WIDTH * j+4;
+                    pvtb.Enabled = true;
+                    pvtb.Text = "1,2,3";
+                    //block.Controls.Add(pvtb);
 
                     Numbers[x, y].Cell = tb;
                     Numbers[x, y].State = CellState.Empty;
                     Numbers[x, y].StyleState = CellStyleState.Normal;
                     Numbers[x, y].Value = 0;
                     Numbers[x, y].Block = row * CELL_ROWS + column;
-
-                    block.Controls.Add(tb);
+                    Numbers[x, y].PossibleValuesBox = pvtb;                    
                 }
             }
         }

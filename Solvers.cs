@@ -25,7 +25,7 @@ namespace Sudoku_Solver
                         }
                         else
                         {
-                            Numbers[i, j].PossibleValues = PossibleValues;
+                            Numbers[i, j].PossibleValues = PossibleValues.ToList();
                             Numbers[i, j].State = CellState.Empty;
                         }
                     }
@@ -72,9 +72,12 @@ namespace Sudoku_Solver
             {
                 for (int j = 0; j < BLOCK_COLUMNS * CELL_COLUMNS; j++)
                 {
-                    if (Numbers[i, j].State == CellState.Set && Numbers[i, j].PossibleValues.Count > 0)
+                    if (Numbers[i, j].PossibleValues != null)
                     {
-                        DisplayCellPossibleValues(i, j, Numbers[i, j].PossibleValues);
+                        if (Numbers[i, j].State == CellState.Set && Numbers[i, j].PossibleValues.Count > 0)
+                        {
+                            DisplayCellPossibleValues(i, j, Numbers[i, j].PossibleValues);
+                        }
                     }
                 }
             }
