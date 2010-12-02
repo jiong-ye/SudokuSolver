@@ -8,8 +8,9 @@ namespace Sudoku_Solver
 {
     partial class SudokuSolver
     {
-        protected enum CellState { Empty, Set, Solved, Guessed };
+        protected enum CellState { Empty, Set, Solved };
         protected enum CellStyleState { Normal, Checked, Conflicted, Solved };
+
         protected struct Number
         {
             public int Block;                                                   //which block this cell belongs to
@@ -18,6 +19,20 @@ namespace Sudoku_Solver
             public CellStyleState StyleState;                                   //determines the background color mostly
             public int Value;                                                   //the integer value of this cell
             public List<int> PossibleValues;                                    //a list of possible values;
+        }
+
+        public struct Pointx
+        {
+            public int X;
+            public int Y;
+            public Boolean Filled;
+
+            public Pointx(int _x, int _y)
+            {
+                this.X = _x;
+                this.Y = _y;
+                this.Filled = true;
+            }
         }
 
         private const int CELLS = 9;                                            //number of cells in a block

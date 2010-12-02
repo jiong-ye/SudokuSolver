@@ -32,6 +32,7 @@
             this.SingleSolve = new System.Windows.Forms.Button();
             this.ShowPossibleValues = new System.Windows.Forms.Button();
             this.SolveMultiRun = new System.Windows.Forms.Button();
+            this.StatusBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // SetNumbers
@@ -78,11 +79,24 @@
             this.SolveMultiRun.UseVisualStyleBackColor = true;
             this.SolveMultiRun.Click += new System.EventHandler(this.SolveMultiRun_Click);
             // 
+            // StatusBox
+            // 
+            this.StatusBox.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.StatusBox.Location = new System.Drawing.Point(552, 131);
+            this.StatusBox.Multiline = true;
+            this.StatusBox.Name = "StatusBox";
+            this.StatusBox.ReadOnly = true;
+            this.StatusBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.StatusBox.Size = new System.Drawing.Size(150, 145);
+            this.StatusBox.TabIndex = 1004;
+            this.StatusBox.TabStop = false;
+            // 
             // SudokuSolver
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(714, 547);
+            this.Controls.Add(this.StatusBox);
             this.Controls.Add(this.SolveMultiRun);
             this.Controls.Add(this.ShowPossibleValues);
             this.Controls.Add(this.SingleSolve);
@@ -96,6 +110,7 @@
             this.Text = "Sudoku Solver";
             this.Load += new System.EventHandler(this.SudokuSolver_Load);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -105,6 +120,7 @@
         private System.Windows.Forms.Button SingleSolve;
         private System.Windows.Forms.Button ShowPossibleValues;
         private System.Windows.Forms.Button SolveMultiRun;
+        private System.Windows.Forms.TextBox StatusBox;
     }
 }
 
