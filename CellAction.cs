@@ -106,6 +106,7 @@ namespace Sudoku_Solver
             }
         }
 
+        //get the coordinate of cell by its name
         Pointx GetCellCoordinateByName(string name)
         {
             Pointx coord = new Pointx();
@@ -125,6 +126,11 @@ namespace Sudoku_Solver
                 }
             }
             return coord;
+        }
+
+        List<Pointx> GetPossibleCellsBySiblings(List<Pointx> CellSiblings, int TargetBlock)
+        {
+
         }
     }
 }

@@ -94,18 +94,30 @@ namespace Sudoku_Solver
             {
                 //do horizontal first
                 //get horizontal sibling cells of the same value
+                int ContainingBlock = -1;
                 List<Pointx> HorizontalCellSibling = new List<Pointx>();
                 foreach(int block in HorizontalSiblingBlocks)
                 {
                     Pointx SiblingCell = FindCellInBlock(block, number);
                     if (SiblingCell.Filled)
+                    {
                         HorizontalCellSibling.Add(SiblingCell);
+                        ContainingBlock = block;
+                    }
                 }
                 if (HorizontalCellSibling.Count == 1)
                 {
+                    //get the block that dont have that number
+                    HorizontalSiblingBlocks.Remove(ContainingBlock);
+
+                    //find the two same value cells in a row of blocks
                     HorizontalCellSibling.Add(new Pointx(row, column));
+
+                    //get the potential cells of the remaining block of the row
+                    List<Pointx> PossibleCells = GetPossibleCellsBySiblings(HorizontalCellSibling, HorizontalSiblingBlocks[0]);
                 }
 
+                
             }
 
             return PossibleValues;
