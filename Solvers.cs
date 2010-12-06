@@ -20,6 +20,7 @@ namespace Sudoku_Solver
                 for (int j = 0; j < BLOCK_COLUMNS * CELL_COLUMNS; j++)
                 {
                     List<int> PossibleValues = new List<int>();
+                    List<Pointx> PossibleCells = new List<Pointx>();
                     if (Numbers[i, j].State == CellState.Empty)
                     {
                         PossibleValues = SolveByRowColumnAndBlock(i, j);
@@ -30,12 +31,14 @@ namespace Sudoku_Solver
                             AppendStatus("Cell[" + i.ToString() + "," + j.ToString() + "] Solved to be " + PossibleValues[0].ToString());
                         }
                     }
-                    else if (Numbers[i, j].State == CellState.Set || Numbers[i, j].State == CellState.Solved)
+                    else if (Numbers[i, j].State != CellState.Empty)
                     {
-                        PossibleValues = SolveBySiblingsElimination(Numbers[i, j].Value, i, j);
-                        if (PossibleValues.Count == 1)
+                        PossibleCells = SolveBySiblingsElimination(Numbers[i, j].Value, i, j);
+                        if (PossibleCells.Count == 1)
                         {
-
+                            SetCellValue(PossibleCells[0].X, PossibleCells[0].Y, Numbers[i, j].Value, CellState.Solved);
+                            ProduceAnswer = true;
+                            AppendStatus("Cell[" + i.ToString() + "," + j.ToString() + "] Solved to be " + PossibleValues[0].ToString());
                         }
                     }
 
@@ -83,9 +86,9 @@ namespace Sudoku_Solver
         }
 
         //solve a filled cell by looking for the same value in siblings
-        private List<int> SolveBySiblingsElimination(int number, int row, int column)
+        private List<Pointx> SolveBySiblingsElimination(int number, int row, int column)
         {
-            List<int> PossibleValues = new List<int>(new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 });
+            List<Pointx> PossibleCell = new List<Pointx>();
 
             //get horizontal sibling blocks
             List<int> HorizontalSiblingBlocks = GetBlockHorizontalSiblings(Numbers[row, column].Block);
@@ -115,12 +118,18 @@ namespace Sudoku_Solver
 
                     //get the potential cells of the remaining block of the row
                     List<Pointx> PossibleCells = GetPossibleCellsBySiblings(HorizontalCellSibling, HorizontalSiblingBlocks[0]);
-                }
 
-                
+                    foreach (Pointx cell in PossibleCells)
+                    {
+                        if (!ColumnContainsNumber(cell.Y, number))
+                        {
+                            PossibleCell.Add(new Pointx(cell.X, cell.Y));
+                        }
+                    }
+                }
             }
 
-            return PossibleValues;
+            return PossibleCell;
         }
 
         private void DisplayAllPossibleValues()

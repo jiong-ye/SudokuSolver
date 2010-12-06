@@ -130,7 +130,29 @@ namespace Sudoku_Solver
 
         List<Pointx> GetPossibleCellsBySiblings(List<Pointx> CellSiblings, int TargetBlock)
         {
+            List<Pointx> PossibleCells = new List<Pointx>();
 
+            for (int i = 0; i < BLOCK_ROWS * CELL_ROWS; i++)
+            {
+                for (int j = 0; j < BLOCK_COLUMNS * CELL_COLUMNS; j++)
+                {
+                    if (Numbers[i, j].Block == TargetBlock && Numbers[i,j].State == CellState.Empty)
+                    {
+                        Boolean DoNotIntersect = true;
+
+                        foreach (Pointx cell in CellSiblings)
+                        {
+                            if (cell.X == i || cell.Y == j)
+                                DoNotIntersect = false;
+                        }
+
+                        if (DoNotIntersect)
+                            PossibleCells.Add(new Pointx(i, j));
+                    }
+                }
+            }
+
+            return PossibleCells;
         }
     }
 }

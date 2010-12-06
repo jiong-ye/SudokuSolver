@@ -75,6 +75,9 @@
     <Compile Include="CellAction.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="ColumnAction.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Extension.cs" />
     <Compile Include="GameAction.cs">
       <SubType>Form</SubType>
