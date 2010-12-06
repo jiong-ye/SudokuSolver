@@ -4,36 +4,52 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 using ExtensionMethods;
+using System.Windows.Forms;
 
 namespace Sudoku_Solver
 {
     partial class SudokuSolver
     {
         //try solving, run only once
-        private void SolveSingleRun()
+        private Boolean SolveSingleRun()
         {
+            Boolean ProduceAnswer = false;
+
             for (int i = 0; i < BLOCK_ROWS * CELL_ROWS; i++)
             {
                 for (int j = 0; j < BLOCK_COLUMNS * CELL_COLUMNS; j++)
                 {
-                    if (Numbers[i, j].State == CellState.Empty && Numbers[i, j].Value == 0)
+                    List<int> PossibleValues = new List<int>();
+                    if (Numbers[i, j].State == CellState.Empty)
                     {
-                        List<int> PossibleValues = SolveByRowColumnAndBlock(i, j);
+                        PossibleValues = SolveByRowColumnAndBlock(i, j);
                         if (PossibleValues.Count == 1)
                         {
                             SetCellValue(i, j, PossibleValues[0], CellState.Solved);
+                            ProduceAnswer = true;
+                            AppendStatus("Cell[" + i.ToString() + "," + j.ToString() + "] Solved to be " + PossibleValues[0].ToString());
                         }
-                        else
+                    }
+                    else if (Numbers[i, j].State == CellState.Set || Numbers[i, j].State == CellState.Solved)
+                    {
+                        PossibleValues = SolveBySiblingsElimination(Numbers[i, j].Value, i, j);
+                        if (PossibleValues.Count == 1)
                         {
-                            Numbers[i, j].PossibleValues = PossibleValues.ToList();
-                            Numbers[i, j].State = CellState.Empty;
+
                         }
+                    }
+
+                    if (PossibleValues.Count > 1)
+                    {
+                        Numbers[i, j].PossibleValues = PossibleValues.ToList();
+                        Numbers[i, j].State = CellState.Empty;
                     }
                 }
             }
+            return ProduceAnswer;
         }
 
-        //solve a cell by looking at its row, column and block
+        //solve an empty cell by looking at its row, column and block
         private List<int> SolveByRowColumnAndBlock(int row, int column)
         {
             List<int> PossibleValues = new List<int>(new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 });
@@ -66,6 +82,47 @@ namespace Sudoku_Solver
             return PossibleValues;
         }
 
+        //solve a filled cell by looking for the same value in siblings
+        private List<int> SolveBySiblingsElimination(int number, int row, int column)
+        {
+            List<int> PossibleValues = new List<int>(new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 });
+
+            //get horizontal sibling blocks
+            List<int> HorizontalSiblingBlocks = GetBlockHorizontalSiblings(Numbers[row, column].Block);
+            List<int> VerticalSiblingBlocks = GetBlockVerticalSiblings(Numbers[row, column].Block);
+            if (HorizontalSiblingBlocks.Count == 2 && VerticalSiblingBlocks.Count == 2)
+            {
+                //do horizontal first
+                //get horizontal sibling cells of the same value
+                int ContainingBlock = -1;
+                List<Pointx> HorizontalCellSibling = new List<Pointx>();
+                foreach(int block in HorizontalSiblingBlocks)
+                {
+                    Pointx SiblingCell = FindCellInBlock(block, number);
+                    if (SiblingCell.Filled)
+                    {
+                        HorizontalCellSibling.Add(SiblingCell);
+                        ContainingBlock = block;
+                    }
+                }
+                if (HorizontalCellSibling.Count == 1)
+                {
+                    //get the block that dont have that number
+                    HorizontalSiblingBlocks.Remove(ContainingBlock);
+
+                    //find the two same value cells in a row of blocks
+                    HorizontalCellSibling.Add(new Pointx(row, column));
+
+                    //get the potential cells of the remaining block of the row
+                    List<Pointx> PossibleCells = GetPossibleCellsBySiblings(HorizontalCellSibling, HorizontalSiblingBlocks[0]);
+                }
+
+                
+            }
+
+            return PossibleValues;
+        }
+
         private void DisplayAllPossibleValues()
         {
             for (int i = 0; i < BLOCK_ROWS * CELL_ROWS; i++)
@@ -91,8 +148,8 @@ namespace Sudoku_Solver
         //check if a value is legal for a cell
         Boolean IsLegalValue(string name, int number)
         {
-            Point c = GetCellCoordinateByName(name);
-            if (!c.IsEmpty)
+            Pointx c = GetCellCoordinateByName(name);
+            if (c.Filled)
                 return IsLegalValue(c.X, c.Y, number);
             return false;
         }
@@ -130,8 +187,8 @@ namespace Sudoku_Solver
                     {
                         if (Numbers[row, column].Block == Numbers[i, j].Block)
                             if (number == Numbers[i, j].Value)
-                                if(Numbers[i, j].Value > 0)
-                                    Conflicts.Add(new Point(i, j)); 
+                                if (Numbers[i, j].Value > 0)
+                                    Conflicts.Add(new Point(i, j));
                     }
                 }
             }

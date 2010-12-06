@@ -31,6 +31,8 @@
             this.SetNumbers = new System.Windows.Forms.Button();
             this.SingleSolve = new System.Windows.Forms.Button();
             this.ShowPossibleValues = new System.Windows.Forms.Button();
+            this.SolveMultiRun = new System.Windows.Forms.Button();
+            this.StatusBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // SetNumbers
@@ -57,19 +59,45 @@
             // 
             // ShowPossibleValues
             // 
-            this.ShowPossibleValues.Location = new System.Drawing.Point(552, 72);
+            this.ShowPossibleValues.Location = new System.Drawing.Point(552, 101);
             this.ShowPossibleValues.Name = "ShowPossibleValues";
             this.ShowPossibleValues.Size = new System.Drawing.Size(150, 23);
             this.ShowPossibleValues.TabIndex = 1002;
+            this.ShowPossibleValues.TabStop = false;
             this.ShowPossibleValues.Text = "Show Possible Values";
             this.ShowPossibleValues.UseVisualStyleBackColor = true;
             this.ShowPossibleValues.Click += new System.EventHandler(this.ShowPossibleValues_Click);
+            // 
+            // SolveMultiRun
+            // 
+            this.SolveMultiRun.Location = new System.Drawing.Point(552, 72);
+            this.SolveMultiRun.Name = "SolveMultiRun";
+            this.SolveMultiRun.Size = new System.Drawing.Size(150, 23);
+            this.SolveMultiRun.TabIndex = 1003;
+            this.SolveMultiRun.TabStop = false;
+            this.SolveMultiRun.Text = "Solve - Till Finish or Stuck";
+            this.SolveMultiRun.UseVisualStyleBackColor = true;
+            this.SolveMultiRun.Click += new System.EventHandler(this.SolveMultiRun_Click);
+            // 
+            // StatusBox
+            // 
+            this.StatusBox.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.StatusBox.Location = new System.Drawing.Point(552, 131);
+            this.StatusBox.Multiline = true;
+            this.StatusBox.Name = "StatusBox";
+            this.StatusBox.ReadOnly = true;
+            this.StatusBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.StatusBox.Size = new System.Drawing.Size(150, 145);
+            this.StatusBox.TabIndex = 1004;
+            this.StatusBox.TabStop = false;
             // 
             // SudokuSolver
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(714, 547);
+            this.Controls.Add(this.StatusBox);
+            this.Controls.Add(this.SolveMultiRun);
             this.Controls.Add(this.ShowPossibleValues);
             this.Controls.Add(this.SingleSolve);
             this.Controls.Add(this.SetNumbers);
@@ -82,6 +110,7 @@
             this.Text = "Sudoku Solver";
             this.Load += new System.EventHandler(this.SudokuSolver_Load);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -90,6 +119,8 @@
         private System.Windows.Forms.Button SetNumbers;
         private System.Windows.Forms.Button SingleSolve;
         private System.Windows.Forms.Button ShowPossibleValues;
+        private System.Windows.Forms.Button SolveMultiRun;
+        private System.Windows.Forms.TextBox StatusBox;
     }
 }
 
