@@ -83,6 +83,9 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Pointx.cs" />
+    <Compile Include="RowAction.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Solvers.cs">
       <SubType>Form</SubType>
     </Compile>

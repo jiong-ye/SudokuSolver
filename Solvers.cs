@@ -42,14 +42,35 @@ namespace Sudoku_Solver
                         }
                     }
 
-                    if (PossibleValues.Count > 1)
+                    if (!ProduceAnswer)
                     {
                         Numbers[i, j].PossibleValues = PossibleValues.ToList();
-                        Numbers[i, j].State = CellState.Empty;
+                        //Numbers[i, j].State = CellState.Empty;
+                        //AppendStatus("Cell[" + i.ToString() + "," + j.ToString() + "] Checked. Not Solved.");
+                    }
+                    else
+                    {
+                        FailedAttemp = 0;
                     }
                 }
             }
             return ProduceAnswer;
+        }
+
+        //try solving, run till completely solved or stuck
+        private Boolean SolveMultiRuns()
+        {
+            FailedAttemp = 0;
+
+            while (FailedAttemp < 5)
+            {
+                if (!SolveSingleRun())
+                    FailedAttemp++;
+            }
+
+            if (FailedAttemp == 5)
+                return false;
+            return true;
         }
 
         //solve an empty cell by looking at its row, column and block
@@ -127,6 +148,44 @@ namespace Sudoku_Solver
                         }
                     }
                 }
+
+                //if horizontal find nothing we do vertical
+                if (PossibleCell.Count != 1)
+                {
+                    //do vertical
+                    //get vertical sibling cell of the same value
+                    ContainingBlock = -1;
+                    PossibleCell.Clear();
+                    List<Pointx> VerticalCellSibling = new List<Pointx>();
+                    foreach (int block in VerticalSiblingBlocks)
+                    {
+                        Pointx SiblingCell = FindCellInBlock(block, number);
+                        if (SiblingCell.Filled)
+                        {
+                            VerticalCellSibling.Add(SiblingCell);
+                            ContainingBlock = block;
+                        }
+                    }
+                    if (VerticalCellSibling.Count == 1)
+                    {
+                        //get the block that dont have the number
+                        VerticalSiblingBlocks.Remove(ContainingBlock);
+
+                        //find the two same value cells in a column of blocks
+                        VerticalCellSibling.Add(new Pointx(row, column));
+
+                        //get the potential cells of the remaining block of the row
+                        List<Pointx> PossibleCells = GetPossibleCellsBySiblings(VerticalCellSibling, VerticalSiblingBlocks[0]);
+
+                        foreach (Pointx cell in PossibleCells)
+                        {
+                            if (!RowContainsNumber(cell.Y, number))
+                            {
+                                PossibleCell.Add(new Pointx(cell.X, cell.Y));
+                            }
+                        }
+                    }
+                }
             }
 
             return PossibleCell;
@@ -140,7 +199,7 @@ namespace Sudoku_Solver
                 {
                     if (Numbers[i, j].PossibleValues != null)
                     {
-                        if (Numbers[i, j].State == CellState.Set && Numbers[i, j].PossibleValues.Count > 0)
+                        if (Numbers[i, j].State == CellState.Empty && Numbers[i, j].PossibleValues.Count > 0)
                         {
                             DisplayCellPossibleValues(i, j, Numbers[i, j].PossibleValues);
                         }
@@ -151,7 +210,13 @@ namespace Sudoku_Solver
 
         private void DisplayCellPossibleValues(int row, int column, List<int> PossibleValues)
         {
+            string values = string.Empty;
 
+            foreach (int number in PossibleValues)
+            {
+                values += number.ToString() + " ";
+            }
+            SetCellValue(row, column, values, CellState.ShowedPossibles);
         }
 
         //check if a value is legal for a cell

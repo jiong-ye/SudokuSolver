@@ -8,8 +8,8 @@ namespace Sudoku_Solver
 {
     partial class SudokuSolver
     {
-        protected enum CellState { Empty, Set, Solved };
-        protected enum CellStyleState { Normal, Checked, Conflicted, Solved };
+        protected enum CellState { Empty, Set, Solved, ShowedPossibles };
+        protected enum CellStyleState { Normal, Checked, Conflicted, Solved, ShowedPossibles };
 
         protected struct Number
         {
@@ -40,7 +40,9 @@ namespace Sudoku_Solver
         private const int CELL_COLUMNS = 3;                                     //number of columns of cells in a block
         private const int CELL_WIDTH = 60;                                      //cell width, change this to change form width
         private const int CELL_HEIGHT = 60;                                     //cell height, change this to change form height
-        private const float CELL_FONT_FIZE = 27.0F;                             //cell font size
+        private const float CELL_FONT_SIZE = 27.0F;                             //cell font size
+        private const float CELL_FONT_SIZE_SMALL = 15.0F;
+        private const string CELL_FONT_FAMILY = "Calibri";
         private const float POSSIBLE_VALUE_FONT_SIZE = 15.0f;
 
         private const int BLOCKS = 9;                                           //number of blocks

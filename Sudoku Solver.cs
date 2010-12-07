@@ -72,13 +72,7 @@ namespace Sudoku_Solver
         {
             if (NumberSet)
             {
-                FailedAttemp = 0;
-
-                while (FailedAttemp < 5)
-                {
-                    if (!SolveSingleRun())
-                        FailedAttemp++;
-                }
+                SolveMultiRuns();
             }
             else
             {
@@ -90,8 +84,8 @@ namespace Sudoku_Solver
         {
             if (NumberSet)
             {
-                SolveSingleRun();
-                DisplayAllPossibleValues();
+                if(!SolveMultiRuns())
+                    DisplayAllPossibleValues();
             }
             else
             {

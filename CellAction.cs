@@ -12,8 +12,6 @@ namespace Sudoku_Solver
         //set up number cells of a block
         public void SetupCells(Panel block, int row, int column)
         {
-            string _FontFamily = "Calibri";
-            float _FontSize = CELL_FONT_FIZE;
             int x, y;
 
             for (int i = 0; i < CELL_ROWS; i++)
@@ -34,7 +32,7 @@ namespace Sudoku_Solver
                     tb.Width = CELL_WIDTH;
                     tb.Height = CELL_HEIGHT;
                     tb.TextAlign = HorizontalAlignment.Center;
-                    tb.Font = new Font(_FontFamily, _FontSize);
+                    tb.Font = new Font(CELL_FONT_FAMILY, CELL_FONT_SIZE);
                     tb.KeyDown += new KeyEventHandler(ValidateTextbox);
                     block.Controls.Add(tb);
 
@@ -69,6 +67,14 @@ namespace Sudoku_Solver
             }
         }
 
+        //set value and state of a cell, for possible values
+        void SetCellValue(int row, int column, string value, CellState state)
+        {
+            Numbers[row, column].State = state;
+            Numbers[row, column].Cell.Text = value.ToString();
+            SetCellStyle(Numbers[row, column].Cell, CellStyleState.ShowedPossibles);
+        }
+
         //set cell style
         void SetCellStyle(TextBox tb, CellStyleState StyleState)
         {
@@ -77,12 +83,19 @@ namespace Sudoku_Solver
             {
                 case CellStyleState.Solved:
                     BackgroundColor = Color.LightGreen;
+                    tb.Font = new Font(CELL_FONT_FAMILY, CELL_FONT_SIZE);
                     break;
                 case CellStyleState.Conflicted:
                     BackgroundColor = Color.Tan;
+                    tb.Font = new Font(CELL_FONT_FAMILY, CELL_FONT_SIZE);
                     break;
                 case CellStyleState.Checked:
                     BackgroundColor = Color.Gainsboro;
+                    tb.Font = new Font(CELL_FONT_FAMILY, CELL_FONT_SIZE);
+                    break;
+                case CellStyleState.ShowedPossibles:
+                    BackgroundColor = Color.Coral;
+                    tb.Font = new Font(CELL_FONT_FAMILY, CELL_FONT_SIZE_SMALL);
                     break;
                 default:
                     break;
