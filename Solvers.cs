@@ -38,7 +38,7 @@ namespace Sudoku_Solver
                         {
                             SetCellValue(PossibleCells[0].X, PossibleCells[0].Y, Numbers[i, j].Value, CellState.Solved);
                             ProduceAnswer = true;
-                            AppendStatus("Cell[" + i.ToString() + "," + j.ToString() + "] Solved to be " + PossibleValues[0].ToString());
+                            AppendStatus("Cell[" + PossibleCells[0].X.ToString() + "," + PossibleCells[0].Y.ToString() + "] Solved to be " + Numbers[i, j].Value.ToString());
                         }
                     }
 
