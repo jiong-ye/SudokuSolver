@@ -16,7 +16,7 @@ namespace Sudoku_Solver
             InitializeComponent();
 
             //set button widths
-            SetNumbers.Width = SingleSolve.Width = ShowPossibleValues.Width = StatusBox.Width = SolveMultiRun.Width = 250;
+            SetNumbers.Width = SingleSolve.Width = ShowPossibleValues.Width = StatusBox.Width = SolveMultiRun.Width = StartGuess.Width = 250;
 
             //set form width and height based on controls
             this.Width = FORM_WIDTH + SetNumbers.Width + 25;
@@ -27,6 +27,7 @@ namespace Sudoku_Solver
             SingleSolve.Left = this.Width - SingleSolve.Width - 13;
             SolveMultiRun.Left = this.Width - SolveMultiRun.Width - 13;
             ShowPossibleValues.Left = this.Width - ShowPossibleValues.Width - 13;
+            StartGuess.Left = this.Width - StartGuess.Width - 13;
             StatusBox.Left = this.Width - StatusBox.Width - 13;            
         }
 
@@ -89,7 +90,23 @@ namespace Sudoku_Solver
             }
             else
             {
-                MessageBox.Show("Set Numbers First, Dumbass.");
+                AppendStatus("Set Numbers First, Dumbass.");
+            }
+        }
+
+        private void StartGuess_Click(object sender, EventArgs e)
+        {
+            if (NumberSet)
+            {
+                if (!SolveMultiRuns())
+                {
+                    DisplayAllPossibleValues();
+                    StartGuessing();
+                }
+            }
+            else
+            {
+                AppendStatus("Set Numbers First, Dumbass.");
             }
         }
     }

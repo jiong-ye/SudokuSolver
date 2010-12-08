@@ -28,11 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SudokuSolver));
             this.SetNumbers = new System.Windows.Forms.Button();
             this.SingleSolve = new System.Windows.Forms.Button();
             this.ShowPossibleValues = new System.Windows.Forms.Button();
             this.SolveMultiRun = new System.Windows.Forms.Button();
             this.StatusBox = new System.Windows.Forms.TextBox();
+            this.StartGuess = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // SetNumbers
@@ -82,7 +84,7 @@
             // StatusBox
             // 
             this.StatusBox.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.StatusBox.Location = new System.Drawing.Point(552, 131);
+            this.StatusBox.Location = new System.Drawing.Point(552, 160);
             this.StatusBox.Multiline = true;
             this.StatusBox.Name = "StatusBox";
             this.StatusBox.ReadOnly = true;
@@ -91,11 +93,23 @@
             this.StatusBox.TabIndex = 1004;
             this.StatusBox.TabStop = false;
             // 
+            // StartGuess
+            // 
+            this.StartGuess.Location = new System.Drawing.Point(552, 131);
+            this.StartGuess.Name = "StartGuess";
+            this.StartGuess.Size = new System.Drawing.Size(150, 23);
+            this.StartGuess.TabIndex = 1005;
+            this.StartGuess.TabStop = false;
+            this.StartGuess.Text = "Start Guessing";
+            this.StartGuess.UseVisualStyleBackColor = true;
+            this.StartGuess.Click += new System.EventHandler(this.StartGuess_Click);
+            // 
             // SudokuSolver
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(714, 547);
+            this.Controls.Add(this.StartGuess);
             this.Controls.Add(this.StatusBox);
             this.Controls.Add(this.SolveMultiRun);
             this.Controls.Add(this.ShowPossibleValues);
@@ -103,6 +117,7 @@
             this.Controls.Add(this.SetNumbers);
             this.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(280, 280);
@@ -121,6 +136,7 @@
         private System.Windows.Forms.Button ShowPossibleValues;
         private System.Windows.Forms.Button SolveMultiRun;
         private System.Windows.Forms.TextBox StatusBox;
+        private System.Windows.Forms.Button StartGuess;
     }
 }
 
