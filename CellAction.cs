@@ -79,23 +79,24 @@ namespace Sudoku_Solver
         void SetCellStyle(TextBox tb, CellStyleState StyleState)
         {
             Color BackgroundColor = Color.White;
+            tb.Font = new Font(CELL_FONT_FAMILY, CELL_FONT_SIZE);
             switch (StyleState)
             {
                 case CellStyleState.Solved:
-                    BackgroundColor = Color.LightGreen;
-                    tb.Font = new Font(CELL_FONT_FAMILY, CELL_FONT_SIZE);
+                    BackgroundColor = Color.LightGreen;                    
                     break;
                 case CellStyleState.Conflicted:
                     BackgroundColor = Color.Tan;
-                    tb.Font = new Font(CELL_FONT_FAMILY, CELL_FONT_SIZE);
                     break;
                 case CellStyleState.Checked:
                     BackgroundColor = Color.Gainsboro;
-                    tb.Font = new Font(CELL_FONT_FAMILY, CELL_FONT_SIZE);
                     break;
                 case CellStyleState.ShowedPossibles:
                     BackgroundColor = Color.Coral;
                     tb.Font = new Font(CELL_FONT_FAMILY, CELL_FONT_SIZE_SMALL);
+                    break;
+                case CellStyleState.Guessed:
+                    BackgroundColor = Color.DarkSeaGreen;
                     break;
                 default:
                     break;

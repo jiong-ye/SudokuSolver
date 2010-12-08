@@ -102,6 +102,7 @@ namespace Sudoku_Solver
                 {
                     DisplayAllPossibleValues();
                     StartGuessing();
+                    SolveMultiRuns();
                 }
             }
             else

@@ -84,7 +84,6 @@
     <Compile Include="GuessAction.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Pointx.cs" />
     <Compile Include="RowAction.cs">
       <SubType>Form</SubType>
     </Compile>

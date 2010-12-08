@@ -43,7 +43,8 @@ namespace Sudoku_Solver
 
                     if (!ProduceAnswer)
                     {
-                        Numbers[i, j].PossibleValues = PossibleValues.ToList();
+                        if (PossibleValues.Count > 0)
+                            Numbers[i, j].PossibleValues = PossibleValues.ToList();
                         //Numbers[i, j].State = CellState.Empty;
                         //AppendStatus("Cell[" + i.ToString() + "," + j.ToString() + "] Checked. Not Solved.");
                     }
@@ -119,7 +120,7 @@ namespace Sudoku_Solver
                 //get horizontal sibling cells of the same value
                 int ContainingBlock = -1;
                 List<Pointx> HorizontalCellSibling = new List<Pointx>();
-                foreach(int block in HorizontalSiblingBlocks)
+                foreach (int block in HorizontalSiblingBlocks)
                 {
                     Pointx SiblingCell = FindCellInBlock(block, number);
                     if (SiblingCell.Filled)

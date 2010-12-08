@@ -8,8 +8,8 @@ namespace Sudoku_Solver
 {
     partial class SudokuSolver
     {
-        protected enum CellState { Empty, Set, Solved, ShowedPossibles };
-        protected enum CellStyleState { Normal, Checked, Conflicted, Solved, ShowedPossibles };
+        protected enum CellState { Empty, Set, Solved, ShowedPossibles, Guessed };
+        protected enum CellStyleState { Normal, Checked, Conflicted, Solved, ShowedPossibles, Guessed };
 
         protected struct Number
         {
@@ -19,6 +19,21 @@ namespace Sudoku_Solver
             public CellStyleState StyleState;                                   //determines the background color mostly
             public int Value;                                                   //the integer value of this cell
             public List<int> PossibleValues;                                    //a list of possible values;
+        }
+
+        protected struct Guess
+        {
+            public Pointx Coord;
+            public List<int> GuessValues;
+            public Boolean Correct;
+
+            public Guess(int _x,int _y,int _value)
+            {
+                Coord = new Pointx(_x, _y);
+                GuessValues = new List<int>();
+                GuessValues.Add(_value);
+                Correct = false;
+            }
         }
 
         public struct Pointx
@@ -61,6 +76,8 @@ namespace Sudoku_Solver
         //this array holds number structures that is used to do operations
         protected Number[,] Numbers = new Number[BLOCK_ROWS * CELL_ROWS, BLOCK_COLUMNS * CELL_COLUMNS];
         protected Boolean NumberSet = false;
+
+        protected List<Guess> Guesses = new List<Guess>();
 
         protected int[,] TestNumbers = { 
                                            {0,0,0,0,4,0,9,0,0},
