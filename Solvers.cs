@@ -264,6 +264,10 @@ namespace Sudoku_Solver
                                 if (Numbers[i, j].Value > 0)
                                     Conflicts.Add(new Point(i, j));
                     }
+                    else
+                    {
+
+                    }
                 }
             }
 

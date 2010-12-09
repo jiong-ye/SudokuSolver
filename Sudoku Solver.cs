@@ -98,11 +98,10 @@ namespace Sudoku_Solver
         {
             if (NumberSet)
             {
+                DisplayAllPossibleValues();
                 if (!SolveMultiRuns())
                 {
-                    DisplayAllPossibleValues();
                     StartGuessing();
-                    SolveMultiRuns();
                 }
             }
             else
