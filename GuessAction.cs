@@ -24,16 +24,18 @@ namespace Sudoku_Solver
 
             int GuessLeft = BestGuesses.Count;
             int GuessIndex = 0;
-
+            
             while (GuessLeft > 0)
             {
                 //get next guess
                 Guess g = BestGuesses[GuessIndex];
                 List<int> PossibleValues = Numbers[g.Coord.X, g.Coord.Y].PossibleValues.ToList();
-
+                
                 //remove guessed value
                 foreach (int val in g.GuessValues)
                     PossibleValues.Remove(val);
+
+                AppendStatus("Guessing Cell[" + g.Coord.X.ToString() + "," + g.Coord.Y.ToString() + "] with " + PossibleValues.Count.ToString() + " Possible Values");
 
                 if (PossibleValues.Count > 0)
                 {
@@ -71,7 +73,7 @@ namespace Sudoku_Solver
                     {
                         SetCellValue(g.Coord.X, g.Coord.Y, guess, CellState.Guessed);
                         SetCellStyle(Numbers[g.Coord.X, g.Coord.Y].Cell, CellStyleState.Guessed);
-                        AppendStatus("Guess Cell[" + g.Coord.X.ToString() + "," + g.Coord.Y.ToString() + "] to be " + guess.ToString());
+                        AppendStatus("Guessed Cell[" + g.Coord.X.ToString() + "," + g.Coord.Y.ToString() + "] to be " + guess.ToString());
                         GuessIndex++;
                         GuessLeft--;
                     }
@@ -86,7 +88,7 @@ namespace Sudoku_Solver
                     else
                     {
                         AppendStatus("No Valid Guesses. Failed");
-                        break;
+                        return;
                     }
                 }
             }
