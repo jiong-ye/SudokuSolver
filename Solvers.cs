@@ -69,7 +69,10 @@ namespace Sudoku_Solver
             }
 
             if (FailedAttemp == 5)
+            {
+                AppendStatus("Failed to find answer");
                 return false;
+            }
             return true;
         }
 
