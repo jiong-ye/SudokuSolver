@@ -31,7 +31,9 @@ namespace Sudoku_Solver
             {
                 Coord = new Pointx(_x, _y);
                 GuessValues = new List<int>();
-                GuessValues.Add(_value);
+                GuessValues.Clear();
+                if(_value > 0)
+                    GuessValues.Add(_value);
                 Correct = false;
             }
         }
