@@ -30,21 +30,18 @@ namespace Sudoku_Solver
             {
                 //get next guess
                 Guess g = BestGuesses[GuessIndex];
-                List<int> PossibleValues = Numbers[g.Coord.X, g.Coord.Y].PossibleValues.ToList();
+                List<int> PossibleValues = SolveByRowColumnAndBlock(g.Coord.X, g.Coord.Y);
 
                 //set cell to pre guess state
                 SetCellValue(g.Coord.X, g.Coord.Y, 0, CellState.Empty);
                 SetCellStyle(g.Coord.X, g.Coord.Y, CellStyleState.Guessing);
-
-                //unmark last cell
-                if (LastIndex > 0)
-                    SetCellStyle(BestGuesses[LastIndex].Coord.X, BestGuesses[LastIndex].Coord.Y, CellStyleState.ShowedPossibles);
-
-                System.Threading.Thread.Sleep(50);
-
-                GuessIndex++;
-                GuessLeft--;
                 
+                //unmark last cell
+                //if (LastIndex > 0)
+                //    SetCellStyle(BestGuesses[LastIndex].Coord.X, BestGuesses[LastIndex].Coord.Y, CellStyleState.ShowedPossibles);
+
+                System.Threading.Thread.Sleep(100);
+
                 //remove guessed value 
                 foreach (int val in g.GuessValues)
                     PossibleValues.Remove(val);
@@ -73,10 +70,9 @@ namespace Sudoku_Solver
                         {
                             if (GuessIndex > 0)
                             {
-                                SetCellValue(g.Coord.X, g.Coord.Y, 0, CellState.Empty);
-                                LastIndex = GuessIndex;
                                 GuessIndex--;
                                 GuessLeft++;
+                                AppendStatus("Go back to index " + GuessIndex.ToString());
                             }
                             g.GuessValues.Clear();
                             AppendStatus("No More Valid Guesses. Failed");
@@ -99,10 +95,9 @@ namespace Sudoku_Solver
                 {
                     if (GuessIndex > 0)
                     {
-                        SetCellValue(g.Coord.X, g.Coord.Y, 0, CellState.Empty);
-                        LastIndex = GuessIndex;
                         GuessIndex--;
                         GuessLeft++;
+                        AppendStatus("Go back to index " + GuessIndex.ToString());
                     }
                     else
                     {

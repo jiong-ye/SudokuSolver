@@ -72,15 +72,11 @@ namespace Sudoku_Solver
             Numbers[row, column].Cell.Text = value.ToString();
         }
 
+        //set cell style
         void SetCellStyle(int row, int column, CellStyleState StyleState)
         {
-            SetCellStyle(Numbers[row, column].Cell, StyleState);
-        }
-
-        //set cell style
-        void SetCellStyle(TextBox tb, CellStyleState StyleState)
-        {
             Color BackgroundColor = Color.White;
+            TextBox tb = Numbers[row, column].Cell;
             tb.Font = new Font(CELL_FONT_FAMILY, CELL_FONT_SIZE);
             switch (StyleState)
             {
