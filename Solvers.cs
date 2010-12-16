@@ -26,6 +26,7 @@ namespace Sudoku_Solver
                         if (PossibleValues.Count == 1)
                         {
                             SetCellValue(i, j, PossibleValues[0], CellState.Solved);
+                            SetCellStyle(i, j, CellStyleState.Solved);
                             ProduceAnswer = true;
                             AppendStatus("Cell[" + i.ToString() + "," + j.ToString() + "] Solved to be " + PossibleValues[0].ToString());
                         }
@@ -36,6 +37,7 @@ namespace Sudoku_Solver
                         if (PossibleCells.Count == 1)
                         {
                             SetCellValue(PossibleCells[0].X, PossibleCells[0].Y, Numbers[i, j].Value, CellState.Solved);
+                            SetCellStyle(PossibleCells[0].X, PossibleCells[0].Y, CellStyleState.Solved);
                             ProduceAnswer = true;
                             AppendStatus("Cell[" + PossibleCells[0].X.ToString() + "," + PossibleCells[0].Y.ToString() + "] Solved to be " + Numbers[i, j].Value.ToString());
                         }
@@ -220,6 +222,7 @@ namespace Sudoku_Solver
                 values += number.ToString() + " ";
             }
             SetCellValue(row, column, values, CellState.ShowedPossibles);
+            SetCellStyle(row, column, CellStyleState.ShowedPossibles);
         }
 
         //check if a value is legal for a cell
@@ -239,7 +242,7 @@ namespace Sudoku_Solver
                 ClearCellStyle(CellStyleState.Conflicted);
                 foreach (Point c in Conflicts)
                 {
-                    SetCellStyle(Numbers[c.X, c.Y].Cell, CellStyleState.Conflicted);
+                    SetCellStyle(c.X, c.Y, CellStyleState.Conflicted);
                     Numbers[c.X, c.Y].StyleState = CellStyleState.Conflicted;
                 }
                 return false;

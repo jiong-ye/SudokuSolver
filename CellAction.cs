@@ -59,12 +59,10 @@ namespace Sudoku_Solver
         {
             Numbers[row, column].Value = value;
             Numbers[row, column].State = state;
-            Numbers[row, column].Cell.Text = value.ToString();
-
-            if (state == CellState.Solved)
-            {
-                SetCellStyle(Numbers[row, column].Cell, CellStyleState.Solved);
-            }
+            if (value > 0 && value < 10)
+                Numbers[row, column].Cell.Text = value.ToString();
+            else
+                Numbers[row, column].Cell.Text = string.Empty;
         }
 
         //set value and state of a cell, for possible values
@@ -72,7 +70,11 @@ namespace Sudoku_Solver
         {
             Numbers[row, column].State = state;
             Numbers[row, column].Cell.Text = value.ToString();
-            SetCellStyle(Numbers[row, column].Cell, CellStyleState.ShowedPossibles);
+        }
+
+        void SetCellStyle(int row, int column, CellStyleState StyleState)
+        {
+            SetCellStyle(Numbers[row, column].Cell, StyleState);
         }
 
         //set cell style
@@ -98,10 +100,14 @@ namespace Sudoku_Solver
                 case CellStyleState.Guessed:
                     BackgroundColor = Color.DarkSeaGreen;
                     break;
+                case CellStyleState.Guessing:
+                    BackgroundColor = Color.LightCoral;
+                    break;
                 default:
                     break;
             }
             tb.BackColor = BackgroundColor;
+            tb.Refresh();
         }
 
         //clear cell style

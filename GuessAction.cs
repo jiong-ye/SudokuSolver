@@ -24,14 +24,28 @@ namespace Sudoku_Solver
 
             int GuessLeft = BestGuesses.Count;
             int GuessIndex = 0;
-            
+            int LastIndex = -1;
+
             while (GuessLeft > 0)
             {
                 //get next guess
                 Guess g = BestGuesses[GuessIndex];
                 List<int> PossibleValues = Numbers[g.Coord.X, g.Coord.Y].PossibleValues.ToList();
+
+                //set cell to pre guess state
+                SetCellValue(g.Coord.X, g.Coord.Y, 0, CellState.Empty);
+                SetCellStyle(g.Coord.X, g.Coord.Y, CellStyleState.Guessing);
+
+                //unmark last cell
+                if (LastIndex > 0)
+                    SetCellStyle(BestGuesses[LastIndex].Coord.X, BestGuesses[LastIndex].Coord.Y, CellStyleState.ShowedPossibles);
+
+                System.Threading.Thread.Sleep(50);
+
+                GuessIndex++;
+                GuessLeft--;
                 
-                //remove guessed value
+                //remove guessed value 
                 foreach (int val in g.GuessValues)
                     PossibleValues.Remove(val);
 
@@ -59,6 +73,8 @@ namespace Sudoku_Solver
                         {
                             if (GuessIndex > 0)
                             {
+                                SetCellValue(g.Coord.X, g.Coord.Y, 0, CellState.Empty);
+                                LastIndex = GuessIndex;
                                 GuessIndex--;
                                 GuessLeft++;
                             }
@@ -72,8 +88,9 @@ namespace Sudoku_Solver
                     if (isValidGuess)
                     {
                         SetCellValue(g.Coord.X, g.Coord.Y, guess, CellState.Guessed);
-                        SetCellStyle(Numbers[g.Coord.X, g.Coord.Y].Cell, CellStyleState.Guessed);
+                        SetCellStyle(g.Coord.X, g.Coord.Y, CellStyleState.Guessed);
                         AppendStatus("Guessed Cell[" + g.Coord.X.ToString() + "," + g.Coord.Y.ToString() + "] to be " + guess.ToString());
+                        LastIndex = GuessIndex;
                         GuessIndex++;
                         GuessLeft--;
                     }
@@ -82,6 +99,8 @@ namespace Sudoku_Solver
                 {
                     if (GuessIndex > 0)
                     {
+                        SetCellValue(g.Coord.X, g.Coord.Y, 0, CellState.Empty);
+                        LastIndex = GuessIndex;
                         GuessIndex--;
                         GuessLeft++;
                     }

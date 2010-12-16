@@ -9,7 +9,7 @@ namespace Sudoku_Solver
     partial class SudokuSolver
     {
         protected enum CellState { Empty, Set, Solved, ShowedPossibles, Guessed };
-        protected enum CellStyleState { Normal, Checked, Conflicted, Solved, ShowedPossibles, Guessed };
+        protected enum CellStyleState { Normal, Checked, Conflicted, Solved, ShowedPossibles, Guessed, Guessing };
 
         protected struct Number
         {
