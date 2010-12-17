@@ -109,7 +109,14 @@ namespace Sudoku_Solver
                 DisplayAllPossibleValues();
                 if (!SolveMultiRuns())
                 {
+                    DateTime GuessStart = DateTime.Now;
                     StartGuessing();
+                    TimeSpan GuessDuration = GuessStart.Subtract(DateTime.Now);
+
+                    if (IsGameSolved())
+                    {
+                        AppendStatus("Puzzled solved. It took " + GuessDuration.TotalSeconds.ToString() + " seconds.");
+                    }
                 }
             }
             else

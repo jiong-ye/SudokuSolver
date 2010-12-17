@@ -86,14 +86,13 @@ namespace Sudoku_Solver
             Pointx BlockOrigin = GetBlockOriginByIndex(block);
 
             //check block
-            for (int i = 0; i < BLOCK_ROWS * CELL_ROWS; i++)
+            for (int i = BlockOrigin.X; i < BlockOrigin.X + CELL_ROWS; i++)
             {
-                for (int j = 0; j < BLOCK_COLUMNS * CELL_COLUMNS; j++)
+                for (int j = BlockOrigin.Y; j < BlockOrigin.Y + CELL_COLUMNS; j++)
                 {
                     if (i != row || j != column)
                     {
-                        if (Numbers[row, column].Block == Numbers[i, j].Block)
-                            PossibleValues.Remove(Numbers[i, j].Value);
+                        PossibleValues.Remove(Numbers[i, j].Value);
                     }
                 }
             }
@@ -241,7 +240,7 @@ namespace Sudoku_Solver
 
             if (Conflicts.Count > 0)
             {
-                ClearCellStyle(CellStyleState.Conflicted);
+                //ClearCellStyle(CellStyleState.Conflicted);
                 foreach (Point c in Conflicts)
                 {
                     SetCellStyle(c.X, c.Y, CellStyleState.Conflicted);
@@ -259,22 +258,18 @@ namespace Sudoku_Solver
         private List<Point> GetConflictingValueCoordinates(int row, int column, int number)
         {
             List<Point> Conflicts = new List<Point>();
+            Pointx BlockOrigin = GetBlockOriginByIndex(Numbers[row, column].Block);
 
             //check block
-            for (int i = 0; i < BLOCK_ROWS * CELL_ROWS; i++)
+            for (int i = BlockOrigin.X; i < BlockOrigin.X + CELL_ROWS; i++)
             {
-                for (int j = 0; j < BLOCK_COLUMNS * CELL_COLUMNS; j++)
+                for (int j = BlockOrigin.Y; j < BlockOrigin.Y + CELL_COLUMNS; j++)
                 {
                     if (i != row || j != column)
                     {
-                        if (Numbers[row, column].Block == Numbers[i, j].Block)
-                            if (number == Numbers[i, j].Value)
-                                if (Numbers[i, j].Value > 0)
-                                    Conflicts.Add(new Point(i, j));
-                    }
-                    else
-                    {
-
+                        if (number == Numbers[i, j].Value)
+                            if (Numbers[i, j].Value > 0)
+                                Conflicts.Add(new Point(i, j));
                     }
                 }
             }
@@ -296,6 +291,23 @@ namespace Sudoku_Solver
             }
 
             return Conflicts;
+        }
+
+        private bool IsGameSolved()
+        {
+            bool solved = true;
+            for (int i = 0; i < BLOCK_ROWS * CELL_ROWS; i++)
+            {
+                for (int j = 0; j < BLOCK_COLUMNS * CELL_COLUMNS; j++)
+                {
+                    if (Numbers[i, j].Value < 1 || Numbers[i, j].Value > 9 || !IsLegalValue(i, j, Numbers[i, j].Value))
+                    {
+                        SetCellStyle(i, j, CellStyleState.Conflicted);
+                        solved = false;
+                    }
+                }
+            }
+            return solved;
         }
     }
 }

@@ -79,8 +79,9 @@ namespace Sudoku_Solver
         protected Number[,] Numbers = new Number[BLOCK_ROWS * CELL_ROWS, BLOCK_COLUMNS * CELL_COLUMNS];
         protected Boolean NumberSet = false;
 
+        //a list of guesses
         protected List<Guess> Guesses = new List<Guess>();
-
+        
         protected int[,] TestNumbers = { 
                                            {0,0,0,0,4,0,9,0,0},
                                            {7,0,0,0,0,8,1,0,0},

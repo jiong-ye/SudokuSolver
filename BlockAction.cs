@@ -93,7 +93,7 @@ namespace Sudoku_Solver
             {
                 for (int j = 0; j < BLOCK_COLUMNS * CELL_COLUMNS; j++)
                 {
-                    if (Numbers[i, j].Block == block && Numbers[i,j].Value == number)
+                    if (Numbers[i, j].Block == block && Numbers[i, j].Value == number)
                     {
                         target.X = i;
                         target.Y = j;
@@ -107,7 +107,10 @@ namespace Sudoku_Solver
         //get first cell's coord of a block by block index
         Pointx GetBlockOriginByIndex(int block)
         {
-
+            return new Pointx(
+                (block / BLOCK_COLUMNS) * BLOCK_COLUMNS,
+                (block % BLOCK_COLUMNS) * BLOCK_COLUMNS
+            );
         }
     }
 }

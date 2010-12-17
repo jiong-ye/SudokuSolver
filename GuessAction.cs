@@ -22,7 +22,6 @@ namespace Sudoku_Solver
                 //get next guess
                 Guess g = BestGuesses[GuessIndex];
                 List<int> PossibleValues = SolveByRowColumnAndBlock(g.Coord.X, g.Coord.Y);
-                SetGuessBoxItemState(GuessIndex, true);
 
                 //set cell to pre guess state
                 SetCellValue(g.Coord.X, g.Coord.Y, 0, CellState.Empty);
