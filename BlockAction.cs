@@ -103,5 +103,11 @@ namespace Sudoku_Solver
             }
             return target;
         }
+
+        //get first cell's coord of a block by block index
+        Pointx GetBlockOriginByIndex(int block)
+        {
+
+        }
     }
 }

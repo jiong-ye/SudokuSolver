@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
 namespace Sudoku_Solver
 {
@@ -10,17 +11,7 @@ namespace Sudoku_Solver
         //backtracing
         private void StartGuessing()
         {
-            List<Guess> BestGuesses = new List<Guess>();
-            int GuessNumberCount = 2;
-
-            //get cells that i can guess reasonably accurate,
-            //starting with cells with 2 possible values
-            while (GuessNumberCount < 10)
-            {
-                foreach (Guess g in GetBestGuesses(GuessNumberCount))
-                    BestGuesses.Add(g);
-                GuessNumberCount++;
-            }
+            List<Guess> BestGuesses = GetBestGuesses();
 
             int GuessLeft = BestGuesses.Count;
             int GuessIndex = 0;
@@ -31,22 +22,15 @@ namespace Sudoku_Solver
                 //get next guess
                 Guess g = BestGuesses[GuessIndex];
                 List<int> PossibleValues = SolveByRowColumnAndBlock(g.Coord.X, g.Coord.Y);
+                SetGuessBoxItemState(GuessIndex, true);
 
                 //set cell to pre guess state
                 SetCellValue(g.Coord.X, g.Coord.Y, 0, CellState.Empty);
                 SetCellStyle(g.Coord.X, g.Coord.Y, CellStyleState.Guessing);
-                
-                //unmark last cell
-                //if (LastIndex > 0)
-                //    SetCellStyle(BestGuesses[LastIndex].Coord.X, BestGuesses[LastIndex].Coord.Y, CellStyleState.ShowedPossibles);
-
-                System.Threading.Thread.Sleep(100);
 
                 //remove guessed value 
                 foreach (int val in g.GuessValues)
                     PossibleValues.Remove(val);
-
-                AppendStatus("Guessing Cell[" + g.Coord.X.ToString() + "," + g.Coord.Y.ToString() + "] with " + PossibleValues.Count.ToString() + " Possible Values");
 
                 if (PossibleValues.Count > 0)
                 {
@@ -72,9 +56,10 @@ namespace Sudoku_Solver
                             {
                                 GuessIndex--;
                                 GuessLeft++;
-                                AppendStatus("Go back to index " + GuessIndex.ToString());
+                                SetGuessBoxItemState(GuessIndex, true);
+                                g.GuessValues.Clear();
                             }
-                            g.GuessValues.Clear();
+
                             AppendStatus("No More Valid Guesses. Failed");
                             break;
                         }
@@ -85,7 +70,7 @@ namespace Sudoku_Solver
                     {
                         SetCellValue(g.Coord.X, g.Coord.Y, guess, CellState.Guessed);
                         SetCellStyle(g.Coord.X, g.Coord.Y, CellStyleState.Guessed);
-                        AppendStatus("Guessed Cell[" + g.Coord.X.ToString() + "," + g.Coord.Y.ToString() + "] to be " + guess.ToString());
+                        SetGuessBoxItemValue(GuessIndex, guess);
                         LastIndex = GuessIndex;
                         GuessIndex++;
                         GuessLeft--;
@@ -97,7 +82,8 @@ namespace Sudoku_Solver
                     {
                         GuessIndex--;
                         GuessLeft++;
-                        AppendStatus("Go back to index " + GuessIndex.ToString());
+                        SetGuessBoxItemState(GuessIndex, true);
+                        g.GuessValues.Clear();
                     }
                     else
                     {
@@ -108,7 +94,23 @@ namespace Sudoku_Solver
             }
         }
 
-        private List<Guess> GetBestGuesses(int GuessNumberCount)
+        private List<Guess> GetBestGuesses()
+        {
+            int GuessNumberCount = 2;
+            List<Guess> BestGuesses = new List<Guess>();
+
+            //get cells that i can guess reasonably accurate,
+            //starting with cells with 2 possible values
+            while (GuessNumberCount < 10)
+            {
+                foreach (Guess g in GetBestGuess(GuessNumberCount))
+                    BestGuesses.Add(g);
+                GuessNumberCount++;
+            }
+
+            return BestGuesses;
+        }
+        private List<Guess> GetBestGuess(int GuessNumberCount)
         {
             List<Guess> BestGuesses = new List<Guess>();
             for (int i = 0; i < BLOCK_ROWS * CELL_ROWS; i++)
@@ -126,6 +128,30 @@ namespace Sudoku_Solver
             }
 
             return BestGuesses;
+        }
+
+        private void SetGuessBoxList(List<Guess> Guesses)
+        {
+            foreach (Guess g in Guesses)
+            {
+                string Item = "Cell[" + g.Coord.X.ToString() + "," + g.Coord.Y.ToString() + "]";
+                Item += " - Guessed: ";
+                GuessBox.Items.Add(Item);
+            }
+
+            GuessBox.Refresh();
+        }
+
+        private void SetGuessBoxItemValue(int index, int guess)
+        {
+            string item = string.Empty;
+            GuessBox.Items[index] += guess.ToString() + ",";
+        }
+
+        private void SetGuessBoxItemState(int index, Boolean state)
+        {
+            GuessBox.SetSelected(index, state);
+            GuessBox.Refresh();
         }
     }
 }

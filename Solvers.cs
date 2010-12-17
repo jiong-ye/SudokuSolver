@@ -82,6 +82,8 @@ namespace Sudoku_Solver
         private List<int> SolveByRowColumnAndBlock(int row, int column)
         {
             List<int> PossibleValues = new List<int>(new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 });
+            int block = Numbers[row, column].Block;
+            Pointx BlockOrigin = GetBlockOriginByIndex(block);
 
             //check block
             for (int i = 0; i < BLOCK_ROWS * CELL_ROWS; i++)

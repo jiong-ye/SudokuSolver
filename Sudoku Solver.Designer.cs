@@ -35,6 +35,7 @@
             this.SolveMultiRun = new System.Windows.Forms.Button();
             this.StatusBox = new System.Windows.Forms.TextBox();
             this.StartGuess = new System.Windows.Forms.Button();
+            this.GuessBox = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
             // SetNumbers
@@ -89,7 +90,7 @@
             this.StatusBox.Name = "StatusBox";
             this.StatusBox.ReadOnly = true;
             this.StatusBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.StatusBox.Size = new System.Drawing.Size(150, 145);
+            this.StatusBox.Size = new System.Drawing.Size(150, 59);
             this.StatusBox.TabIndex = 1004;
             this.StatusBox.TabStop = false;
             // 
@@ -104,11 +105,21 @@
             this.StartGuess.UseVisualStyleBackColor = true;
             this.StartGuess.Click += new System.EventHandler(this.StartGuess_Click);
             // 
+            // GuessBox
+            // 
+            this.GuessBox.FormattingEnabled = true;
+            this.GuessBox.Location = new System.Drawing.Point(552, 226);
+            this.GuessBox.Name = "GuessBox";
+            this.GuessBox.Size = new System.Drawing.Size(150, 316);
+            this.GuessBox.TabIndex = 1006;
+            this.GuessBox.TabStop = false;
+            // 
             // SudokuSolver
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(714, 547);
+            this.Controls.Add(this.GuessBox);
             this.Controls.Add(this.StartGuess);
             this.Controls.Add(this.StatusBox);
             this.Controls.Add(this.SolveMultiRun);
@@ -137,6 +148,7 @@
         private System.Windows.Forms.Button SolveMultiRun;
         private System.Windows.Forms.TextBox StatusBox;
         private System.Windows.Forms.Button StartGuess;
+        private System.Windows.Forms.ListBox GuessBox;
     }
 }
 

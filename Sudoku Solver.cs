@@ -16,19 +16,22 @@ namespace Sudoku_Solver
             InitializeComponent();
 
             //set button widths
-            SetNumbers.Width = SingleSolve.Width = ShowPossibleValues.Width = StatusBox.Width = SolveMultiRun.Width = StartGuess.Width = 250;
+            int SideControlWidth = 250;
+            SetNumbers.Width = SingleSolve.Width = ShowPossibleValues.Width = StatusBox.Width = SolveMultiRun.Width = StartGuess.Width = GuessBox.Width = SideControlWidth;
 
             //set form width and height based on controls
             this.Width = FORM_WIDTH + SetNumbers.Width + 25;
             this.Height = FORM_HEIGHT + 40;
 
             //set button left
-            SetNumbers.Left = this.Width - SetNumbers.Width - 13;
-            SingleSolve.Left = this.Width - SingleSolve.Width - 13;
-            SolveMultiRun.Left = this.Width - SolveMultiRun.Width - 13;
-            ShowPossibleValues.Left = this.Width - ShowPossibleValues.Width - 13;
-            StartGuess.Left = this.Width - StartGuess.Width - 13;
-            StatusBox.Left = this.Width - StatusBox.Width - 13;            
+            int SideControlMargin = 13;
+            SetNumbers.Left = this.Width - SetNumbers.Width - SideControlMargin;
+            SingleSolve.Left = this.Width - SingleSolve.Width - SideControlMargin;
+            SolveMultiRun.Left = this.Width - SolveMultiRun.Width - SideControlMargin;
+            ShowPossibleValues.Left = this.Width - ShowPossibleValues.Width - SideControlMargin;
+            StartGuess.Left = this.Width - StartGuess.Width - SideControlMargin;
+            StatusBox.Left = this.Width - StatusBox.Width - SideControlMargin;
+            GuessBox.Left = this.Width - GuessBox.Width - SideControlMargin;
         }
 
         private void SudokuSolver_Load(object sender, EventArgs e)
@@ -85,8 +88,13 @@ namespace Sudoku_Solver
         {
             if (NumberSet)
             {
-                if(!SolveMultiRuns())
+                if (!SolveMultiRuns())
+                {
                     DisplayAllPossibleValues();
+
+                    List<Guess> BestGuesses = GetBestGuesses();
+                    SetGuessBoxList(BestGuesses);
+                }
             }
             else
             {
