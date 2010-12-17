@@ -143,13 +143,32 @@ namespace Sudoku_Solver
         private void SetGuessBoxItemValue(int index, int guess)
         {
             string item = string.Empty;
-            GuessBox.Items[index] += guess.ToString() + ",";
+
+            if (!GuessBox.InvokeRequired)
+            {
+                GuessBox.Items[index] += guess.ToString() + ",";
+            }
+            else
+            {
+                SetGuessBoxItemValueDelegate del = new SetGuessBoxItemValueDelegate(SetGuessBoxItemValue);
+                GuessBox.Invoke(del, new object[] { index, guess });
+            }
         }
+        delegate void SetGuessBoxItemValueDelegate(int index, int guess);
 
         private void SetGuessBoxItemState(int index, Boolean state)
         {
-            GuessBox.SetSelected(index, state);
-            GuessBox.Refresh();
+            if (!GuessBox.InvokeRequired)
+            {
+                GuessBox.SetSelected(index, state);
+                GuessBox.Refresh();
+            }
+            else
+            {
+                SetGuessBoxItemStateDelegate del = new SetGuessBoxItemStateDelegate(SetGuessBoxItemState);
+                GuessBox.Invoke(del, new object[] { index, state });
+            }
         }
+        delegate void SetGuessBoxItemStateDelegate(int index, Boolean state);
     }
 }

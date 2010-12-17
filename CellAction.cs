@@ -57,13 +57,23 @@ namespace Sudoku_Solver
         //set value and state of a cell
         void SetCellValue(int row, int column, int value, CellState state)
         {
-            Numbers[row, column].Value = value;
-            Numbers[row, column].State = state;
-            if (value > 0 && value < 10)
-                Numbers[row, column].Cell.Text = value.ToString();
+            if (!Numbers[row, column].Cell.InvokeRequired)
+            {
+                Numbers[row, column].Value = value;
+                Numbers[row, column].State = state;
+                if (value > 0 && value < 10)
+                    Numbers[row, column].Cell.Text = value.ToString();
+                else
+                    Numbers[row, column].Cell.Text = string.Empty;
+            }
             else
-                Numbers[row, column].Cell.Text = string.Empty;
+            {
+                SetCellValueDelegate del = new SetCellValueDelegate(SetCellValue);
+                Numbers[row,column].Cell.Invoke(del, new object[] { row, column, value, state });
+            }
         }
+
+        delegate void SetCellValueDelegate(int row, int column, int value, CellState state);
 
         //set value and state of a cell, for possible values
         void SetCellValue(int row, int column, string value, CellState state)
@@ -77,34 +87,44 @@ namespace Sudoku_Solver
         {
             Color BackgroundColor = Color.White;
             TextBox tb = Numbers[row, column].Cell;
-            tb.Font = new Font(CELL_FONT_FAMILY, CELL_FONT_SIZE);
-            switch (StyleState)
+
+            if (!tb.InvokeRequired)
             {
-                case CellStyleState.Solved:
-                    BackgroundColor = Color.LightGreen;                    
-                    break;
-                case CellStyleState.Conflicted:
-                    BackgroundColor = Color.Tan;
-                    break;
-                case CellStyleState.Checked:
-                    BackgroundColor = Color.Gainsboro;
-                    break;
-                case CellStyleState.ShowedPossibles:
-                    BackgroundColor = Color.Coral;
-                    tb.Font = new Font(CELL_FONT_FAMILY, CELL_FONT_SIZE_SMALL);
-                    break;
-                case CellStyleState.Guessed:
-                    BackgroundColor = Color.DarkSeaGreen;
-                    break;
-                case CellStyleState.Guessing:
-                    BackgroundColor = Color.LightCoral;
-                    break;
-                default:
-                    break;
+                tb.Font = new Font(CELL_FONT_FAMILY, CELL_FONT_SIZE);
+                switch (StyleState)
+                {
+                    case CellStyleState.Solved:
+                        BackgroundColor = Color.LightGreen;
+                        break;
+                    case CellStyleState.Conflicted:
+                        BackgroundColor = Color.Tan;
+                        break;
+                    case CellStyleState.Checked:
+                        BackgroundColor = Color.Gainsboro;
+                        break;
+                    case CellStyleState.ShowedPossibles:
+                        BackgroundColor = Color.Coral;
+                        tb.Font = new Font(CELL_FONT_FAMILY, CELL_FONT_SIZE_SMALL);
+                        break;
+                    case CellStyleState.Guessed:
+                        BackgroundColor = Color.DarkSeaGreen;
+                        break;
+                    case CellStyleState.Guessing:
+                        BackgroundColor = Color.LightCoral;
+                        break;
+                    default:
+                        break;
+                }
+                tb.BackColor = BackgroundColor;
+                tb.Refresh();
             }
-            tb.BackColor = BackgroundColor;
-            tb.Refresh();
+            else
+            {
+                SetCellStyleDelegate del = new SetCellStyleDelegate(SetCellStyle);
+                tb.Invoke(del, new object[] { row, column, StyleState });
+            }
         }
+        delegate void SetCellStyleDelegate(int row, int column, CellStyleState StyleState);
 
         //clear cell style
         void ClearCellStyle(CellStyleState StyleState)

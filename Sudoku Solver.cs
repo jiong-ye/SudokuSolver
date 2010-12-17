@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace Sudoku_Solver
@@ -109,19 +110,27 @@ namespace Sudoku_Solver
                 DisplayAllPossibleValues();
                 if (!SolveMultiRuns())
                 {
-                    DateTime GuessStart = DateTime.Now;
-                    StartGuessing();
-                    TimeSpan GuessDuration = GuessStart.Subtract(DateTime.Now);
-
-                    if (IsGameSolved())
-                    {
-                        AppendStatus("Puzzled solved. It took " + GuessDuration.TotalSeconds.ToString() + " seconds.");
-                    }
+                    BackgroundWorker GuessWorker = new BackgroundWorker();
+                    GuessWorker.DoWork += BackgroundWork;
+                    GuessWorker.RunWorkerAsync();
+                    
                 }
             }
             else
             {
                 AppendStatus("Set Numbers First, Dumbass.");
+            }
+        }
+
+        private void BackgroundWork(object sender, EventArgs e)
+        {
+            DateTime GuessStart = DateTime.Now;
+            StartGuessing();
+            TimeSpan GuessDuration = GuessStart.Subtract(DateTime.Now);
+
+            if (IsGameSolved())
+            {
+                AppendStatus("Puzzled solved. It took " + GuessDuration.TotalSeconds.ToString() + " seconds.");
             }
         }
     }
