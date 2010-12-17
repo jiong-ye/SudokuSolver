@@ -108,6 +108,7 @@
             // GuessBox
             // 
             this.GuessBox.FormattingEnabled = true;
+            this.GuessBox.HorizontalScrollbar = true;
             this.GuessBox.Location = new System.Drawing.Point(552, 226);
             this.GuessBox.Name = "GuessBox";
             this.GuessBox.Size = new System.Drawing.Size(150, 316);
@@ -126,6 +127,7 @@
             this.Controls.Add(this.ShowPossibleValues);
             this.Controls.Add(this.SingleSolve);
             this.Controls.Add(this.SetNumbers);
+            this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

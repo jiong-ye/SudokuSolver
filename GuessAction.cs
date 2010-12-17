@@ -26,6 +26,7 @@ namespace Sudoku_Solver
                 //set cell to pre guess state
                 SetCellValue(g.Coord.X, g.Coord.Y, 0, CellState.Empty);
                 SetCellStyle(g.Coord.X, g.Coord.Y, CellStyleState.Guessing);
+                SetGuessBoxItemState(GuessIndex, true);
 
                 //remove guessed value 
                 foreach (int val in g.GuessValues)
@@ -55,7 +56,6 @@ namespace Sudoku_Solver
                             {
                                 GuessIndex--;
                                 GuessLeft++;
-                                SetGuessBoxItemState(GuessIndex, true);
                                 g.GuessValues.Clear();
                             }
 
@@ -81,7 +81,6 @@ namespace Sudoku_Solver
                     {
                         GuessIndex--;
                         GuessLeft++;
-                        SetGuessBoxItemState(GuessIndex, true);
                         g.GuessValues.Clear();
                     }
                     else
