@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Globalization;
 
 namespace Sudoku_Solver
 {
@@ -12,13 +13,19 @@ namespace Sudoku_Solver
         private void StartGuessing()
         {
             List<Guess> BestGuesses = GetBestGuesses();
+            UpdateStatusProgressMaximum(BestGuesses.Count);
 
+            UInt64 PossibleGuesses = GetPossibleGuess();
             int GuessLeft = BestGuesses.Count;
             int GuessIndex = 0;
             int LastIndex = -1;
+            int GuessMade = 0;
 
             while (GuessLeft > 0)
             {
+                //update progress
+                UpdateStatusProgress(GuessLeft, ++GuessMade, PossibleGuesses);
+                
                 //get next guess
                 Guess g = BestGuesses[GuessIndex];
                 List<int> PossibleValues = SolveByRowColumnAndBlock(g.Coord.X, g.Coord.Y);
@@ -26,7 +33,7 @@ namespace Sudoku_Solver
                 //set cell to pre guess state
                 SetCellValue(g.Coord.X, g.Coord.Y, 0, CellState.Empty);
                 SetCellStyle(g.Coord.X, g.Coord.Y, CellStyleState.Guessing);
-                SetGuessBoxItemState(GuessIndex, true);
+                //SetGuessBoxItemState(GuessIndex, true);
 
                 //remove guessed value 
                 foreach (int val in g.GuessValues)
@@ -69,7 +76,7 @@ namespace Sudoku_Solver
                     {
                         SetCellValue(g.Coord.X, g.Coord.Y, guess, CellState.Guessed);
                         SetCellStyle(g.Coord.X, g.Coord.Y, CellStyleState.Guessed);
-                        SetGuessBoxItemValue(GuessIndex, guess);
+                        //SetGuessBoxItemValue(GuessIndex, guess);
                         LastIndex = GuessIndex;
                         GuessIndex++;
                         GuessLeft--;
@@ -128,47 +135,46 @@ namespace Sudoku_Solver
             return BestGuesses;
         }
 
-        private void SetGuessBoxList(List<Guess> Guesses)
+        private UInt64 GetPossibleGuess()
         {
-            foreach (Guess g in Guesses)
+            UInt64 count = 1;
+            
+            foreach (Number n in Numbers)
             {
-                string Item = "Cell[" + g.Coord.X.ToString() + "," + g.Coord.Y.ToString() + "]";
-                Item += " - Guessed: ";
-                GuessBox.Items.Add(Item);
+                if (n.State == CellState.ShowedPossibles && n.PossibleValues.Count > 0)
+                    count =  count * Convert.ToUInt64(n.PossibleValues.Count);
             }
 
-            GuessBox.Refresh();
+            return count;
         }
-
-        private void SetGuessBoxItemValue(int index, int guess)
+               
+        private void UpdateStatusProgressMaximum(int max)
         {
-            string item = string.Empty;
-
-            if (!GuessBox.InvokeRequired)
+            if (!StatusStrip.InvokeRequired)
             {
-                GuessBox.Items[index] += guess.ToString() + ",";
+                StatusProgress.Maximum = max;
             }
             else
             {
-                SetGuessBoxItemValueDelegate del = new SetGuessBoxItemValueDelegate(SetGuessBoxItemValue);
-                GuessBox.Invoke(del, new object[] { index, guess });
+                UpdateStatusProgressMaximumDelegate del = new UpdateStatusProgressMaximumDelegate(UpdateStatusProgressMaximum);
+                StatusStrip.Invoke(del, new object[] { max });
             }
         }
-        delegate void SetGuessBoxItemValueDelegate(int index, int guess);
+        delegate void UpdateStatusProgressMaximumDelegate(int max);
 
-        private void SetGuessBoxItemState(int index, Boolean state)
+        private void UpdateStatusProgress(int GuessLeft, int GuessMade, UInt64 PossibleGuesses)
         {
-            if (!GuessBox.InvokeRequired)
+            if (!StatusStrip.InvokeRequired)
             {
-                GuessBox.SetSelected(index, state);
-                GuessBox.Refresh();
+                StatusProgress.Value = StatusProgress.Maximum - GuessLeft;
+                StatusLabel.Text = GuessMade.ToString("###,###") + " of " + PossibleGuesses.ToString("###,###") + " Guesses Made";
             }
             else
             {
-                SetGuessBoxItemStateDelegate del = new SetGuessBoxItemStateDelegate(SetGuessBoxItemState);
-                GuessBox.Invoke(del, new object[] { index, state });
+                UpdateStatusProgressDelegate del = new UpdateStatusProgressDelegate(UpdateStatusProgress);
+                StatusStrip.Invoke(del, new object[] { GuessLeft, GuessMade, PossibleGuesses });
             }
         }
-        delegate void SetGuessBoxItemStateDelegate(int index, Boolean state);
+        delegate void UpdateStatusProgressDelegate(int GuessLeft, int GuessMade,  UInt64 PossibleGuesses);
     }
 }

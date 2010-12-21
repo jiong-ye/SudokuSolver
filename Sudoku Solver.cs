@@ -5,7 +5,6 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace Sudoku_Solver
@@ -18,11 +17,11 @@ namespace Sudoku_Solver
 
             //set button widths
             int SideControlWidth = 250;
-            SetNumbers.Width = SingleSolve.Width = ShowPossibleValues.Width = StatusBox.Width = SolveMultiRun.Width = StartGuess.Width = GuessBox.Width = SideControlWidth;
+            SetNumbers.Width = SingleSolve.Width = ShowPossibleValues.Width = StatusBox.Width = SolveMultiRun.Width = StartGuess.Width = SideControlWidth;
 
             //set form width and height based on controls
             this.Width = FORM_WIDTH + SetNumbers.Width + 25;
-            this.Height = FORM_HEIGHT + 40;
+            this.Height = FORM_HEIGHT + 60;
 
             //set button left
             int SideControlMargin = 13;
@@ -32,7 +31,7 @@ namespace Sudoku_Solver
             ShowPossibleValues.Left = this.Width - ShowPossibleValues.Width - SideControlMargin;
             StartGuess.Left = this.Width - StartGuess.Width - SideControlMargin;
             StatusBox.Left = this.Width - StatusBox.Width - SideControlMargin;
-            GuessBox.Left = this.Width - GuessBox.Width - SideControlMargin;
+            StatusLabel.Text = "0 Guess Made";
         }
 
         private void SudokuSolver_Load(object sender, EventArgs e)
@@ -94,7 +93,9 @@ namespace Sudoku_Solver
                     DisplayAllPossibleValues();
 
                     List<Guess> BestGuesses = GetBestGuesses();
-                    SetGuessBoxList(BestGuesses);
+                    UpdateStatusProgressMaximum(BestGuesses.Count);
+                    
+                    UpdateStatusProgress(BestGuesses.Count(), 0, GetPossibleGuess());
                 }
             }
             else
@@ -126,11 +127,11 @@ namespace Sudoku_Solver
         {
             DateTime GuessStart = DateTime.Now;
             StartGuessing();
-            TimeSpan GuessDuration = GuessStart.Subtract(DateTime.Now);
+            TimeSpan GuessDuration = DateTime.Now.Subtract(GuessStart);
 
             if (IsGameSolved())
             {
-                AppendStatus("Puzzled solved. It took " + GuessDuration.TotalSeconds.ToString() + " seconds.");
+                AppendStatus("Puzzled solved. It took " + Math.Round(GuessDuration.TotalSeconds, 2).ToString() + " seconds.");
             }
         }
     }

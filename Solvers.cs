@@ -277,7 +277,7 @@ namespace Sudoku_Solver
             //check row
             for (int i = 0; i < BLOCK_COLUMNS * CELL_COLUMNS; i++)
             {
-                if (number == Numbers[row, i].Value)
+                if (i != column && number == Numbers[row, i].Value)
                     if (Numbers[row, i].Value > 0)
                         Conflicts.Add(new Point(row, i));
             }
@@ -285,7 +285,7 @@ namespace Sudoku_Solver
             //check column
             for (int i = 0; i < BLOCK_ROWS * CELL_ROWS; i++)
             {
-                if (number == Numbers[i, column].Value)
+                if (i != row && number == Numbers[i, column].Value)
                     if (Numbers[i, column].Value > 0)
                         Conflicts.Add(new Point(i, column));
             }
@@ -300,11 +300,16 @@ namespace Sudoku_Solver
             {
                 for (int j = 0; j < BLOCK_COLUMNS * CELL_COLUMNS; j++)
                 {
-                    if (Numbers[i, j].Value < 1 || Numbers[i, j].Value > 9 || !IsLegalValue(i, j, Numbers[i, j].Value))
+                    if (IsLegalValue(i, j, Numbers[i, j].Value))
+                    {
+                        SetCellStyle(i, j, CellStyleState.Solved);
+                    }
+                    else
                     {
                         SetCellStyle(i, j, CellStyleState.Conflicted);
                         solved = false;
                     }
+                    System.Threading.Thread.Sleep(50);
                 }
             }
             return solved;

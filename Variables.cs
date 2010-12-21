@@ -57,7 +57,7 @@ namespace Sudoku_Solver
         private const int CELL_COLUMNS = 3;                                     //number of columns of cells in a block
         private const int CELL_WIDTH = 60;                                      //cell width, change this to change form width
         private const int CELL_HEIGHT = 60;                                     //cell height, change this to change form height
-        private const float CELL_FONT_SIZE = 27.0F;                             //cell font size
+        private const float CELL_FONT_SIZE = 33.0F;                             //cell font size
         private const float CELL_FONT_SIZE_SMALL = 15.0F;
         private const string CELL_FONT_FAMILY = "Calibri";
         private const float POSSIBLE_VALUE_FONT_SIZE = 15.0f;
@@ -83,15 +83,15 @@ namespace Sudoku_Solver
         protected List<Guess> Guesses = new List<Guess>();
         
         protected int[,] TestNumbers = { 
-                                           {0,0,0,0,4,0,9,0,0},
-                                           {7,0,0,0,0,8,1,0,0},
-                                           {3,0,0,9,0,5,0,0,4},
-                                           {0,0,0,0,0,0,0,0,9},
-                                           {0,0,0,0,0,0,2,7,0},
-                                           {5,0,8,0,0,0,0,4,0},
-                                           {1,0,5,8,0,3,0,0,0},
-                                           {0,0,9,0,0,0,0,0,8},
-                                           {8,0,3,0,0,4,0,1,7}
+                                           {0,0,0,7,0,0,9,0,5},
+                                           {0,0,0,0,0,0,3,4,0},
+                                           {0,0,5,0,0,3,0,1,8},
+                                           {2,0,0,0,8,0,0,0,0},
+                                           {5,9,4,0,0,2,1,0,0},
+                                           {0,0,1,0,0,0,4,0,0},
+                                           {8,0,0,0,0,0,0,7,4},
+                                           {0,5,0,0,0,4,0,0,0},
+                                           {9,0,0,0,2,0,5,0,0}
                                        };
     }
 }

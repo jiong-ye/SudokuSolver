@@ -9,12 +9,21 @@ namespace Sudoku_Solver
     {
         void AppendStatus(string message)
         {
-            if (message.Length > 0)
+            if (!StatusBox.InvokeRequired)
             {
-                StatusBox.Text += message + Environment.NewLine;
-                StatusBox.SelectionStart = StatusBox.Text.Length;
-                StatusBox.ScrollToCaret();
+                if (message.Length > 0)
+                {
+                    StatusBox.Text += message + Environment.NewLine;
+                    StatusBox.SelectionStart = StatusBox.Text.Length;
+                    StatusBox.ScrollToCaret();
+                }
+            }
+            else
+            {
+                AppendStatusDelegate del = new AppendStatusDelegate(AppendStatus);
+                StatusBox.Invoke(del, new object[] { message });
             }
         }
+        delegate void AppendStatusDelegate(string message);
     }
 }

@@ -35,7 +35,11 @@
             this.SolveMultiRun = new System.Windows.Forms.Button();
             this.StatusBox = new System.Windows.Forms.TextBox();
             this.StartGuess = new System.Windows.Forms.Button();
-            this.GuessBox = new System.Windows.Forms.ListBox();
+            this.StatusStrip = new System.Windows.Forms.StatusStrip();
+            this.StatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.StatusProgress = new System.Windows.Forms.ToolStripProgressBar();
+            this.StatusText = new System.Windows.Forms.ToolStripStatusLabel();
+            this.StatusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // SetNumbers
@@ -90,7 +94,7 @@
             this.StatusBox.Name = "StatusBox";
             this.StatusBox.ReadOnly = true;
             this.StatusBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.StatusBox.Size = new System.Drawing.Size(150, 59);
+            this.StatusBox.Size = new System.Drawing.Size(150, 362);
             this.StatusBox.TabIndex = 1004;
             this.StatusBox.TabStop = false;
             // 
@@ -105,22 +109,40 @@
             this.StartGuess.UseVisualStyleBackColor = true;
             this.StartGuess.Click += new System.EventHandler(this.StartGuess_Click);
             // 
-            // GuessBox
+            // StatusStrip
             // 
-            this.GuessBox.FormattingEnabled = true;
-            this.GuessBox.HorizontalScrollbar = true;
-            this.GuessBox.Location = new System.Drawing.Point(552, 226);
-            this.GuessBox.Name = "GuessBox";
-            this.GuessBox.Size = new System.Drawing.Size(150, 316);
-            this.GuessBox.TabIndex = 1006;
-            this.GuessBox.TabStop = false;
+            this.StatusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.StatusLabel,
+            this.StatusProgress,
+            this.StatusText});
+            this.StatusStrip.Location = new System.Drawing.Point(0, 525);
+            this.StatusStrip.Name = "StatusStrip";
+            this.StatusStrip.Size = new System.Drawing.Size(714, 22);
+            this.StatusStrip.TabIndex = 1007;
+            this.StatusStrip.Text = "statusStrip1";
+            // 
+            // StatusLabel
+            // 
+            this.StatusLabel.Name = "StatusLabel";
+            this.StatusLabel.Size = new System.Drawing.Size(0, 17);
+            // 
+            // StatusProgress
+            // 
+            this.StatusProgress.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.StatusProgress.Name = "StatusProgress";
+            this.StatusProgress.Size = new System.Drawing.Size(200, 16);
+            // 
+            // StatusText
+            // 
+            this.StatusText.Name = "StatusText";
+            this.StatusText.Size = new System.Drawing.Size(0, 17);
             // 
             // SudokuSolver
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(714, 547);
-            this.Controls.Add(this.GuessBox);
+            this.Controls.Add(this.StatusStrip);
             this.Controls.Add(this.StartGuess);
             this.Controls.Add(this.StatusBox);
             this.Controls.Add(this.SolveMultiRun);
@@ -137,6 +159,8 @@
             this.Name = "SudokuSolver";
             this.Text = "Sudoku Solver";
             this.Load += new System.EventHandler(this.SudokuSolver_Load);
+            this.StatusStrip.ResumeLayout(false);
+            this.StatusStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -150,7 +174,10 @@
         private System.Windows.Forms.Button SolveMultiRun;
         private System.Windows.Forms.TextBox StatusBox;
         private System.Windows.Forms.Button StartGuess;
-        private System.Windows.Forms.ListBox GuessBox;
+        private System.Windows.Forms.StatusStrip StatusStrip;
+        private System.Windows.Forms.ToolStripStatusLabel StatusLabel;
+        private System.Windows.Forms.ToolStripProgressBar StatusProgress;
+        private System.Windows.Forms.ToolStripStatusLabel StatusText;
     }
 }
 
