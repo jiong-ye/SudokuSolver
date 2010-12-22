@@ -42,7 +42,8 @@ namespace Sudoku_Solver
                 if (PossibleValues.Count > 0)
                 {
                     Random r = new Random();
-                    int guess = PossibleValues[r.Next(0, PossibleValues.Count)];
+                    //int guess = PossibleValues[r.Next(0, PossibleValues.Count)];
+                    int guess = PossibleValues[0];
                     Boolean isValidGuess = IsLegalValue(g.Coord.X, g.Coord.Y, guess);
                     g.GuessValues.Add(guess);
 

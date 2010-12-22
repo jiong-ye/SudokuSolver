@@ -35,15 +35,17 @@ namespace Sudoku_Solver
         //set test numbers, so i dont have to enter them manually everytime.
         private void SetTestNumber()
         {
+            int which = 0;
+
             for (int i = 0; i < BLOCK_ROWS * CELL_ROWS; i++)
             {
                 for (int j = 0; j < BLOCK_COLUMNS * CELL_COLUMNS; j++)
                 {
-                    if (TestNumbers[i, j] > 0)
+                    if (TestNumbers[which , i, j] > 0)
                     {
-                        Numbers[i, j].Cell.Text = TestNumbers[i, j].ToString();
+                        Numbers[i, j].Cell.Text = TestNumbers[which, i, j].ToString();
                         Numbers[i, j].State = CellState.Set;
-                        Numbers[i, j].Value = TestNumbers[i, j];
+                        Numbers[i, j].Value = TestNumbers[which, i, j];
                     }
                 }
             }

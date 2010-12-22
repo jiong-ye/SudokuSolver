@@ -27,12 +27,12 @@ namespace Sudoku_Solver
             public List<int> GuessValues;
             public Boolean Correct;
 
-            public Guess(int _x,int _y,int _value)
+            public Guess(int _x, int _y, int _value)
             {
                 Coord = new Pointx(_x, _y);
                 GuessValues = new List<int>();
                 GuessValues.Clear();
-                if(_value > 0)
+                if (_value > 0)
                     GuessValues.Add(_value);
                 Correct = false;
             }
@@ -81,17 +81,30 @@ namespace Sudoku_Solver
 
         //a list of guesses
         protected List<Guess> Guesses = new List<Guess>();
-        
-        protected int[,] TestNumbers = { 
-                                           {0,0,0,7,0,0,9,0,5},
-                                           {0,0,0,0,0,0,3,4,0},
-                                           {0,0,5,0,0,3,0,1,8},
-                                           {2,0,0,0,8,0,0,0,0},
-                                           {5,9,4,0,0,2,1,0,0},
-                                           {0,0,1,0,0,0,4,0,0},
-                                           {8,0,0,0,0,0,0,7,4},
-                                           {0,5,0,0,0,4,0,0,0},
-                                           {9,0,0,0,2,0,5,0,0}
+
+        protected int[, ,] TestNumbers = { 
+                                            {
+                                                {0,0,0,7,0,0,9,0,5}, 
+                                                {0,0,0,0,0,0,3,4,0}, 
+                                                {0,0,5,0,0,3,0,1,8}, 
+                                                {2,0,0,0,8,0,0,0,0}, 
+                                                {5,9,4,0,0,2,1,0,0}, 
+                                                {0,0,1,0,0,0,4,0,0}, 
+                                                {8,0,0,0,0,0,0,7,4}, 
+                                                {0,5,0,0,0,4,0,0,0}, 
+                                                {9,0,0,0,2,0,5,0,0}  
+                                            },
+                                            {
+                                                {0,0,0,3,0,0,0,0,0},
+                                                {2,0,0,5,0,0,0,1,7},
+                                                {0,0,0,0,1,0,0,0,6},
+                                                {0,4,7,0,0,0,0,0,0},
+                                                {0,3,0,4,0,2,0,8,0},
+                                                {8,0,6,7,3,0,0,0,0},
+                                                {0,0,1,0,0,0,5,0,0},
+                                                {0,8,0,0,4,1,0,0,0},
+                                                {0,0,0,8,0,0,0,0,3}
+                                            }
                                        };
     }
 }
